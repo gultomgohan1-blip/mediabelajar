@@ -3,7 +3,7 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  // Navigasi area Design Studio terpisah dari navigasi bab, kuis, dan SUS.
+  // Tab Design Studio.
   const studioTabs = $$('.studio-tab');
   const studioPanels = $$('.studio-panel');
   studioTabs.forEach((button) => {
@@ -18,265 +18,245 @@
     });
   });
 
-  // Poster builder: pratinjau langsung dan ekspor PNG tanpa mengirim data ke server.
+  // Satu sistem warna dipakai oleh live canvas dan file PNG hasil ekspor.
   const paletteMap = {
-    forest:   { bg: '#102C24', paper: '#F7F5E9', accent: '#D9F36A', second: '#F3A65A', soft: '#285A47' },
-    ocean:    { bg: '#102B3B', paper: '#F2F6F7', accent: '#57D8D0', second: '#F5C95B', soft: '#20566B' },
-    sunset:   { bg: '#3A1C2D', paper: '#FFF3E8', accent: '#FF7D70', second: '#FFD166', soft: '#71354A' },
-    editorial:{ bg: '#F0E9D9', paper: '#20232D', accent: '#3156E8', second: '#E96A4B', soft: '#D6CBB6' },
-    citrus:   { bg: '#17233D', paper: '#FFF8E8', accent: '#C9F05A', second: '#4F72F2', soft: '#344A75' },
-    lavender: { bg: '#29223D', paper: '#FFF8FF', accent: '#D4B8FF', second: '#FF8BB8', soft: '#594A78' },
-    mono:     { bg: '#171717', paper: '#F7F4ED', accent: '#FFFFFF', second: '#A5A5A5', soft: '#414141' },
-    coral:    { bg: '#F8E6D5', paper: '#2C2631', accent: '#E65D4F', second: '#E6B85C', soft: '#E9CBB5' }
+    forest:    { bg:'#173D32', paper:'#FFF9EC', accent:'#D6EF6A', second:'#F2A46F', soft:'#285D4D' },
+    ocean:     { bg:'#102E46', paper:'#F4FBFF', accent:'#59D8D0', second:'#FFC857', soft:'#1C5871' },
+    sunset:    { bg:'#3A1F36', paper:'#FFF3EA', accent:'#FF786D', second:'#FFD166', soft:'#77415D' },
+    editorial: { bg:'#F0E9D9', paper:'#20242C', accent:'#3158DD', second:'#F06F52', soft:'#D6CBB6' },
+    citrus:    { bg:'#17253F', paper:'#FFF9E8', accent:'#D5F36A', second:'#5479EE', soft:'#344E78' },
+    lavender:  { bg:'#312A4A', paper:'#FFF8FF', accent:'#D9BEFF', second:'#FF91B9', soft:'#655681' },
+    mono:      { bg:'#17191D', paper:'#FAF8F2', accent:'#FFFFFF', second:'#A7ADB6', soft:'#414751' },
+    coral:     { bg:'#F6E6D7', paper:'#2D2930', accent:'#E45F50', second:'#E6B75C', soft:'#E9CBB5' }
   };
-  const titleInput = $('#poster-title-input');
-  const descInput = $('#poster-desc-input');
-  const ctaInput = $('#poster-cta-input');
-  const paletteInput = $('#poster-palette');
-  const layoutInput = $('#poster-layout');
-  const motifInput = $('#poster-motif');
-  const preview = $('#poster-preview');
-  const previewTitle = $('#poster-preview-title');
-  const previewDesc = $('#poster-preview-desc');
-  const previewCta = $('#poster-preview-cta');
-  const exportStatus = $('#poster-export-status');
-  const briefInput = $('#poster-brief');
+  const $brief = $('#poster-brief');
+  const $title = $('#poster-title-input');
+  const $desc = $('#poster-desc-input');
+  const $cta = $('#poster-cta-input');
+  const $palette = $('#poster-palette');
+  const $layout = $('#poster-layout');
+  const $motif = $('#poster-motif');
+  const $preview = $('#poster-preview');
+  const $liveCanvas = $('#poster-live-canvas');
+  const $exportStatus = $('#poster-export-status');
+  const $download = $('#poster-download');
 
   const briefPresets = {
-    environment: { title: 'JAGA BUMI, MULAI HARI INI', desc: 'Kurangi plastik sekali pakai. Bawa botol minum dan tas guna ulang untuk kebiasaan yang lebih bertanggung jawab.', cta: 'PILIH GUNA ULANG', palette: 'forest', layout: 'swiss', motif: 'waves' },
-    literacy: { title: 'CEK DULU SEBELUM KLIK', desc: 'Kenali sumber, periksa informasi, dan bagikan konten dengan bijak. Jejak digital dimulai dari keputusan kecil.', cta: 'JADI PENGGUNA CERDAS', palette: 'lavender', layout: 'type', motif: 'grid' },
-    health: { title: 'GERAK 30 MENIT, SEHAT SETIAP HARI', desc: 'Luangkan waktu untuk bergerak, minum air yang cukup, dan istirahat dengan teratur.', cta: 'MULAI DARI SEKARANG', palette: 'ocean', layout: 'split', motif: 'circles' },
-    'anti-bullying': { title: 'KATA-KATA BISA MENGUATKAN', desc: 'Hargai perbedaan, dengarkan teman, dan berani mencari bantuan ketika melihat perundungan.', cta: 'BANGUN SEKOLAH RAMAH', palette: 'coral', layout: 'collage', motif: 'cutout' },
-    energy: { title: 'MATIKAN SAAT TAK DIGUNAKAN', desc: 'Gunakan listrik seperlunya. Matikan lampu dan perangkat saat tidak diperlukan.', cta: 'HEMAT ENERGI HARI INI', palette: 'citrus', layout: 'diagonal', motif: 'lines' },
-    culture: { title: 'CERITAKAN BUDAYA KITA', desc: 'Kenali tradisi, bahasa, motif, dan cerita dari lingkungan sekitar. Warisan budaya hidup melalui generasi.', cta: 'BANGGA BUDAYA LOKAL', palette: 'editorial', layout: 'frame', motif: 'geometry' },
-    water: { title: 'SETETES AIR, BERARTI', desc: 'Tutup keran setelah digunakan dan gunakan air secukupnya. Setiap tindakan membantu menjaga sumber daya.', cta: 'GUNAKAN AIR DENGAN BIJAK', palette: 'ocean', layout: 'center', motif: 'waves' }
+    environment: { title:'KURANGI PLASTIK SEKALI PAKAI', desc:'Bawa tumbler dan tas pakai ulang. Langkah kecilmu membantu menjaga bumi.', cta:'MULAI DARI DIRI SENDIRI', palette:'forest', layout:'swiss', motif:'waves' },
+    water: { title:'SETETES AIR, BERARTI', desc:'Tutup keran setelah digunakan. Gunakan air secukupnya dan jaga sumber air untuk masa depan.', cta:'HEMAT AIR MULAI HARI INI', palette:'ocean', layout:'center', motif:'circles' },
+    energy: { title:'MATIKAN SAAT TAK DIGUNAKAN', desc:'Gunakan listrik seperlunya. Matikan lampu dan perangkat ketika tidak dibutuhkan.', cta:'HEMAT ENERGI SEKARANG', palette:'citrus', layout:'diagonal', motif:'lines' },
+    literacy: { title:'CEK DULU SEBELUM KLIK', desc:'Periksa sumber informasi, pikirkan dampaknya, dan bagikan konten dengan bijak.', cta:'JADI PENGGUNA CERDAS', palette:'lavender', layout:'type', motif:'grid' },
+    health: { title:'GERAK 30 MENIT SETIAP HARI', desc:'Sisihkan waktu untuk bergerak, minum air, dan istirahat dengan teratur.', cta:'MULAI HIDUP SEHAT', palette:'coral', layout:'split', motif:'circles' },
+    'anti-bullying': { title:'KATA-KATA BISA MENGUATKAN', desc:'Hargai perbedaan, dengarkan teman, dan ciptakan lingkungan sekolah yang aman.', cta:'JADILAH TEMAN YANG PEDULI', palette:'sunset', layout:'collage', motif:'cutout' },
+    culture: { title:'BANGGA CERITA BUDAYA KITA', desc:'Kenali motif, bahasa, musik, dan tradisi di sekitar kita. Warisan budaya hidup saat dijaga.', cta:'KENALI DAN LESTARIKAN', palette:'editorial', layout:'frame', motif:'geometry' },
+    recycling: { title:'PILAH SEBELUM MEMBUANG', desc:'Pisahkan sampah organik, anorganik, dan bahan yang dapat didaur ulang.', cta:'MULAI DARI TEMPAT SAMPAH', palette:'forest', layout:'split', motif:'geometry' },
+    reading: { title:'SATU HARI, SATU CERITA', desc:'Luangkan waktu membaca. Temukan ide, pengetahuan, dan sudut pandang baru dari setiap halaman.', cta:'BUKA BUKU HARI INI', palette:'sunset', layout:'swiss', motif:'grid' },
+    'clean-school': { title:'SEKOLAH BERSIH, BELAJAR NYAMAN', desc:'Buang sampah pada tempatnya, rawat fasilitas, dan jaga ruang belajar bersama.', cta:'JAGA KELAS KITA', palette:'ocean', layout:'collage', motif:'waves' }
   };
 
-  function updatePosterPreview() {
-    if (!preview) return;
-    const variants = [
-      'palette-forest','palette-ocean','palette-sunset','palette-editorial','palette-citrus','palette-lavender','palette-mono','palette-coral',
-      'layout-center','layout-split','layout-diagonal','layout-swiss','layout-frame','layout-collage','layout-type',
-      'motif-circles','motif-lines','motif-geometry','motif-grid','motif-waves','motif-cutout'
-    ];
-    preview.classList.remove(...variants);
-    preview.classList.add(`palette-${paletteInput.value}`, `layout-${layoutInput.value}`, `motif-${motifInput.value}`);
-    previewTitle.textContent = titleInput.value.trim() || 'JUDUL POSTER';
-    previewDesc.textContent = descInput.value.trim() || 'Tuliskan pesan pendukung yang singkat dan mudah dipahami.';
-    previewCta.textContent = ctaInput.value.trim() || 'TULISKAN AJAKAN';
-    exportStatus.textContent = 'Pratinjau diperbarui. Periksa komposisi sebelum mengekspor.';
-  }
-
-  if (briefInput) briefInput.addEventListener('change', () => {
-    const preset = briefPresets[briefInput.value];
-    if (!preset) return;
-    titleInput.value = preset.title;
-    descInput.value = preset.desc;
-    ctaInput.value = preset.cta;
-    paletteInput.value = preset.palette;
-    layoutInput.value = preset.layout;
-    motifInput.value = preset.motif;
-    updatePosterPreview();
-    exportStatus.textContent = 'Tema contoh diterapkan. Kamu tetap bisa mengubah semua teks dan gaya desain.';
-  });
-
-  // Kartu gaya visual memberi titik awal berbeda tanpa mengunci pilihan siswa.
-  $$('[data-style-preset]').forEach((button) => {
-    button.addEventListener('click', () => {
-      if (briefInput) briefInput.value = 'custom';
-      paletteInput.value = button.dataset.palette;
-      layoutInput.value = button.dataset.layout;
-      motifInput.value = button.dataset.motif;
-      $$('.style-preset-card').forEach((card) => card.classList.toggle('is-selected', card === button));
-      updatePosterPreview();
-      exportStatus.textContent = `Gaya ${button.querySelector('b')?.textContent || 'pilihan'} diterapkan. Silakan lanjutkan personalisasi desain.`;
-    });
-  });
-  [titleInput, descInput, ctaInput, paletteInput, layoutInput, motifInput].forEach((control) => {
-    if (control) control.addEventListener('input', updatePosterPreview);
-    if (control) control.addEventListener('change', updatePosterPreview);
-  });
-  updatePosterPreview();
-
-  function roundedRect(ctx, x, y, width, height, radius, color) {
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.roundRect(x, y, width, height, radius);
-    ctx.fill();
-  }
-
-  function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 5) {
-    const words = String(text).trim().split(/\s+/).filter(Boolean);
+  function wrapText(ctx, text, maxWidth, maxLines = 5) {
+    const words = String(text || '').trim().split(/\s+/).filter(Boolean);
     const lines = [];
     let line = '';
-    words.forEach((word) => {
-      const test = line ? `${line} ${word}` : word;
-      if (line && ctx.measureText(test).width > maxWidth) {
+    for (const word of words) {
+      const candidate = line ? `${line} ${word}` : word;
+      if (line && ctx.measureText(candidate).width > maxWidth) {
         lines.push(line);
         line = word;
       } else {
-        line = test;
+        line = candidate;
       }
-    });
+    }
     if (line) lines.push(line);
-    const visible = lines.slice(0, maxLines);
-    if (lines.length > maxLines) visible[maxLines - 1] = `${visible[maxLines - 1].replace(/[.,;:]?$/, '')}…`;
-    visible.forEach((lineText, index) => ctx.fillText(lineText, x, y + index * lineHeight));
-    return visible.length;
+    if (lines.length > maxLines) {
+      const clipped = lines.slice(0, maxLines);
+      clipped[maxLines - 1] = clipped[maxLines - 1].replace(/[.,;:]?$/, '') + '…';
+      return clipped;
+    }
+    return lines;
+  }
+
+  function drawWrapped(ctx, text, x, y, maxWidth, font, color, lineHeight, align = 'left', maxLines = 4) {
+    ctx.font = font;
+    ctx.fillStyle = color;
+    ctx.textAlign = align;
+    const lines = wrapText(ctx, text, maxWidth, maxLines);
+    lines.forEach((line, i) => ctx.fillText(line, x, y + i * lineHeight));
+    return lines.length;
+  }
+
+  function drawMotif(ctx, motif, c, W, H, layout) {
+    ctx.save();
+    if (motif === 'circles') {
+      ctx.globalAlpha = .96;
+      ctx.fillStyle = c.soft; ctx.beginPath(); ctx.arc(W * .78, H * .30, 270, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = c.second; ctx.beginPath(); ctx.arc(W * .78, H * .30, 190, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = c.accent; ctx.beginPath(); ctx.arc(W * .78, H * .30, 104, 0, Math.PI * 2); ctx.fill();
+    } else if (motif === 'lines') {
+      ctx.strokeStyle = c.second; ctx.lineWidth = 17;
+      for (let i = 0; i < 9; i++) { ctx.beginPath(); ctx.moveTo(690 + i * 43, 100); ctx.lineTo(1040 + i * 43, 565); ctx.stroke(); }
+      ctx.fillStyle = c.accent; ctx.fillRect(740, 635, 380, 25);
+    } else if (motif === 'geometry') {
+      ctx.fillStyle = c.soft; ctx.beginPath(); ctx.moveTo(840, 95); ctx.lineTo(W, 95); ctx.lineTo(W, 820); ctx.lineTo(700, 820); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = c.second; ctx.beginPath(); ctx.moveTo(930, 145); ctx.lineTo(W, 145); ctx.lineTo(W, 520); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = c.accent; ctx.beginPath(); ctx.moveTo(760, 680); ctx.lineTo(1120, 680); ctx.lineTo(940, 1010); ctx.closePath(); ctx.fill();
+    } else if (motif === 'grid') {
+      ctx.strokeStyle = c.soft; ctx.globalAlpha = .55; ctx.lineWidth = 2;
+      for (let x = 650; x <= 1200; x += 54) { ctx.beginPath(); ctx.moveTo(x, 150); ctx.lineTo(x, 1320); ctx.stroke(); }
+      for (let y = 150; y <= 1320; y += 54) { ctx.beginPath(); ctx.moveTo(650, y); ctx.lineTo(1200, y); ctx.stroke(); }
+      ctx.globalAlpha = 1; ctx.fillStyle = c.accent; ctx.fillRect(735, 235, 270, 270);
+    } else if (motif === 'waves') {
+      ctx.lineWidth = 35; ctx.strokeStyle = c.soft;
+      for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.moveTo(560, 315 + k * 82); ctx.bezierCurveTo(710, 120 + k * 82, 930, 495 + k * 82, 1290, 230 + k * 82); ctx.stroke(); }
+      ctx.strokeStyle = c.accent; ctx.lineWidth = 13; ctx.beginPath(); ctx.moveTo(600, 700); ctx.bezierCurveTo(800, 520, 1000, 865, 1280, 640); ctx.stroke();
+    } else if (motif === 'cutout') {
+      ctx.fillStyle = c.soft; ctx.save(); ctx.translate(930, 360); ctx.rotate(-.24); ctx.fillRect(-260, -210, 490, 500); ctx.restore();
+      ctx.fillStyle = c.second; ctx.beginPath(); ctx.arc(1020, 420, 190, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = c.accent; ctx.save(); ctx.translate(815, 670); ctx.rotate(.28); ctx.fillRect(-180, -35, 460, 76); ctx.restore();
+    }
+    ctx.restore();
   }
 
   function drawPoster() {
-    const colors = paletteMap[paletteInput.value] || paletteMap.forest;
-    const layout = layoutInput.value;
-    const motif = motifInput.value;
-    const title = titleInput.value.trim() || 'JUDUL POSTER';
-    const desc = descInput.value.trim() || 'Tuliskan pesan pendukung yang singkat dan mudah dipahami.';
-    const cta = ctaInput.value.trim() || 'TULISKAN AJAKAN';
+    const c = paletteMap[$palette?.value] || paletteMap.forest;
+    const layout = $layout?.value || 'center';
+    const motif = $motif?.value || 'waves';
+    const title = ($title?.value || 'JUDUL POSTER').trim().toLocaleUpperCase('id-ID');
+    const desc = ($desc?.value || 'Tuliskan pesan pendukung yang singkat dan mudah dipahami.').trim();
+    const cta = ($cta?.value || 'TULISKAN AJAKAN').trim().toLocaleUpperCase('id-ID');
     const canvas = document.createElement('canvas');
-    canvas.width = 1240;
-    canvas.height = 1754;
+    canvas.width = 1240; canvas.height = 1754;
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
+    ctx.fillStyle = c.bg; ctx.fillRect(0, 0, W, H);
 
-    ctx.fillStyle = colors.bg;
-    ctx.fillRect(0, 0, W, H);
+    // Bentuk utama menjadi focal point dan berubah sesuai pilihan motif.
+    if (motif !== 'none') drawMotif(ctx, motif, c, W, H, layout);
 
-    // Motif visual dipilih sebagai latihan bidang, garis, ritme, dan ruang.
-    if (motif === 'circles') {
-      ctx.fillStyle = colors.soft; ctx.beginPath(); ctx.arc(1010, 390, 300, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.second; ctx.beginPath(); ctx.arc(1010, 390, 205, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.accent; ctx.beginPath(); ctx.arc(1010, 390, 105, 0, Math.PI * 2); ctx.fill();
-    } else if (motif === 'lines') {
-      ctx.save(); ctx.strokeStyle = colors.second; ctx.lineWidth = 16;
-      for (let i = 0; i < 9; i++) { ctx.beginPath(); ctx.moveTo(740 + i * 48, 110); ctx.lineTo(1100 + i * 48, 600); ctx.stroke(); }
-      ctx.restore(); ctx.fillStyle = colors.accent; ctx.fillRect(760, 650, 360, 24);
-    } else if (motif === 'geometry') {
-      ctx.fillStyle = colors.soft; ctx.beginPath(); ctx.moveTo(1240, 70); ctx.lineTo(1240, 880); ctx.lineTo(580, 880); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = colors.second; ctx.beginPath(); ctx.moveTo(930, 90); ctx.lineTo(1240, 90); ctx.lineTo(1240, 520); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = colors.accent; ctx.beginPath(); ctx.moveTo(785, 705); ctx.lineTo(1100, 705); ctx.lineTo(940, 970); ctx.closePath(); ctx.fill();
-    } else if (motif === 'grid') {
-      ctx.save(); ctx.strokeStyle = colors.soft; ctx.globalAlpha = .75; ctx.lineWidth = 3;
-      for (let x = 690; x <= 1190; x += 62) { ctx.beginPath(); ctx.moveTo(x, 130); ctx.lineTo(x, 1320); ctx.stroke(); }
-      for (let y = 150; y <= 1320; y += 62) { ctx.beginPath(); ctx.moveTo(660, y); ctx.lineTo(1190, y); ctx.stroke(); }
-      ctx.restore(); ctx.fillStyle = colors.accent; ctx.fillRect(760, 230, 280, 280);
-    } else if (motif === 'waves') {
-      ctx.save(); ctx.lineWidth = 28; ctx.strokeStyle = colors.soft;
-      for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.moveTo(600, 300 + k * 90); ctx.bezierCurveTo(760, 140 + k * 90, 920, 480 + k * 90, 1260, 250 + k * 90); ctx.stroke(); }
-      ctx.strokeStyle = colors.accent; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(650, 660); ctx.bezierCurveTo(820, 500, 980, 850, 1260, 620); ctx.stroke(); ctx.restore();
-    } else {
-      ctx.fillStyle = colors.soft; ctx.fillRect(760, 160, 480, 480);
-      ctx.fillStyle = colors.second; ctx.fillRect(880, 275, 360, 365);
-      ctx.fillStyle = colors.accent; ctx.beginPath(); ctx.arc(900, 330, 180, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.bg; ctx.fillRect(760, 560, 250, 220);
-    }
+    // Sistem layout: tiap opsi punya posisi teks, ruang visual, dan ritme yang berbeda.
+    let x = 100, y = 790, width = 940, align = 'left', titleSize = 104, kicker = 'VISUAL CAMPAIGN / DKV';
+    if (layout === 'center') { x = W / 2; y = 820; width = 990; align = 'center'; titleSize = 102; }
+    if (layout === 'split') { x = 92; y = 690; width = 650; align = 'left'; titleSize = 94; }
+    if (layout === 'diagonal') { x = 112; y = 820; width = 900; align = 'left'; titleSize = 104; ctx.save(); ctx.translate(0, 90); ctx.rotate(-.07); ctx.fillStyle = c.accent; ctx.fillRect(30, 570, 1180, 28); ctx.restore(); }
+    if (layout === 'swiss') { x = 112; y = 670; width = 825; align = 'left'; titleSize = 91; ctx.fillStyle = c.accent; ctx.fillRect(88, 175, 20, 440); ctx.fillStyle = c.second; ctx.font = '900 190px Arial, sans-serif'; ctx.textAlign = 'right'; ctx.fillText('01', 1148, 440); ctx.strokeStyle = c.paper; ctx.globalAlpha = .35; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(88, 555); ctx.lineTo(1150, 555); ctx.stroke(); ctx.globalAlpha = 1; }
+    if (layout === 'frame') { x = W / 2; y = 785; width = 930; align = 'center'; titleSize = 98; ctx.strokeStyle = c.accent; ctx.lineWidth = 12; ctx.strokeRect(58, 58, W - 116, H - 116); ctx.strokeStyle = c.second; ctx.lineWidth = 3; ctx.strokeRect(92, 92, W - 184, H - 184); }
+    if (layout === 'collage') { x = 98; y = 960; width = 1000; align = 'left'; titleSize = 100; ctx.fillStyle = c.accent; ctx.save(); ctx.translate(930, 420); ctx.rotate(-.2); ctx.fillRect(-190, -180, 380, 360); ctx.restore(); ctx.fillStyle = c.second; ctx.beginPath(); ctx.arc(955, 430, 150, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = c.soft; ctx.fillRect(75, 740, 1090, 62); }
+    if (layout === 'type') { x = 92; y = 610; width = 1080; align = 'left'; titleSize = 122; ctx.fillStyle = c.accent; ctx.fillRect(88, 242, 760, 24); ctx.fillStyle = c.second; ctx.font = '900 35px Arial, sans-serif'; ctx.textAlign = 'left'; ctx.fillText('TYPE / IMAGE / MESSAGE', 92, 210); }
+    if (layout === 'asym') { x = 120; y = 840; width = 780; align = 'left'; titleSize = 104; ctx.fillStyle = c.soft; ctx.beginPath(); ctx.moveTo(880, 150); ctx.lineTo(1220, 150); ctx.lineTo(1220, 780); ctx.closePath(); ctx.fill(); ctx.fillStyle = c.accent; ctx.beginPath(); ctx.arc(990, 470, 140, 0, Math.PI * 2); ctx.fill(); }
 
-    // Kerangka tiap pilihan layout dibuat berbeda agar siswa melihat variasi komposisi.
-    let textX = 105, align = 'left', maxTextWidth = 930, titleY = 730;
-    if (layout === 'center') { textX = 620; align = 'center'; maxTextWidth = 1010; titleY = 760; }
-    if (layout === 'split') { textX = 100; align = 'left'; maxTextWidth = 690; titleY = 690; }
-    if (layout === 'diagonal') { textX = 105; align = 'left'; maxTextWidth = 850; titleY = 745; ctx.save(); ctx.translate(0, 90); ctx.rotate(-.075); ctx.fillStyle = colors.accent; ctx.fillRect(55, 590, 1130, 24); ctx.restore(); }
-    if (layout === 'swiss') {
-      textX = 115; align = 'left'; maxTextWidth = 810; titleY = 610;
-      ctx.fillStyle = colors.accent; ctx.fillRect(90, 190, 18, 400);
-      ctx.fillStyle = colors.second; ctx.font = '900 200px Arial, sans-serif'; ctx.textAlign = 'right'; ctx.fillText('01', 1120, 450);
-      ctx.strokeStyle = colors.paper; ctx.globalAlpha = .35; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(90, 510); ctx.lineTo(1145, 510); ctx.stroke(); ctx.globalAlpha = 1;
-    }
-    if (layout === 'frame') {
-      textX = 620; align = 'center'; maxTextWidth = 900; titleY = 735;
-      ctx.strokeStyle = colors.accent; ctx.lineWidth = 12; ctx.strokeRect(72, 72, W - 144, H - 144);
-      ctx.strokeStyle = colors.second; ctx.lineWidth = 3; ctx.strokeRect(104, 104, W - 208, H - 208);
-    }
-    if (layout === 'collage') {
-      textX = 100; align = 'left'; maxTextWidth = 825; titleY = 880;
-      ctx.fillStyle = colors.accent; ctx.save(); ctx.translate(920, 430); ctx.rotate(-.22); ctx.fillRect(-190, -190, 380, 380); ctx.restore();
-      ctx.fillStyle = colors.second; ctx.beginPath(); ctx.arc(970, 420, 145, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.soft; ctx.fillRect(80, 690, 1080, 70);
-    }
-    if (layout === 'type') {
-      textX = 95; align = 'left'; maxTextWidth = 1050; titleY = 650;
-      ctx.fillStyle = colors.accent; ctx.fillRect(90, 260, 760, 22);
-      ctx.fillStyle = colors.second; ctx.font = '900 38px Arial, sans-serif'; ctx.textAlign = 'left'; ctx.fillText('TYPE / IMAGE / MESSAGE', 95, 220);
-    }
+    // Header dan nomor seri.
+    ctx.fillStyle = c.accent; ctx.font = '800 25px Arial, sans-serif'; ctx.textAlign = 'left'; ctx.fillText('DKV STUDIO  /  VISUAL COMMUNICATION', 92, 100);
+    ctx.fillStyle = c.paper; ctx.globalAlpha = .78; ctx.textAlign = 'right'; ctx.font = '700 22px Arial, sans-serif'; ctx.fillText('DESIGN STUDY 01', 1148, 100); ctx.globalAlpha = 1;
 
-    // Header label.
-    ctx.fillStyle = colors.accent; ctx.font = '700 28px Arial, sans-serif'; ctx.textAlign = 'left';
-    ctx.fillText('DKV STUDIO  /  VISUAL CAMPAIGN', 92, 110);
-    ctx.textAlign = 'right'; ctx.fillStyle = colors.paper; ctx.fillText('DESIGN STUDY 01', 1148, 110);
+    // Kicker, judul, deskripsi. Ukuran judul menyesuaikan panjang kata dan lebar bidang.
+    ctx.textAlign = align; ctx.fillStyle = c.second; ctx.font = '800 28px Arial, sans-serif'; ctx.fillText(kicker, x, y - 82);
+    const approxLength = title.length;
+    const fontSize = Math.max(64, Math.min(titleSize, approxLength > 34 ? titleSize * .72 : approxLength > 25 ? titleSize * .84 : titleSize));
+    const headlineLines = drawWrapped(ctx, title, x, y + 22, width, `900 ${fontSize}px Arial, sans-serif`, c.paper, fontSize * 1.02, align, 4);
+    const descTop = y + 22 + headlineLines * fontSize * 1.02 + 45;
+    drawWrapped(ctx, desc, x, descTop, Math.min(width, 850), '400 37px Arial, sans-serif', c.paper, 52, align, 4);
 
-    // Headline and supporting copy.
-    ctx.textAlign = align;
-    ctx.fillStyle = colors.second; ctx.font = '700 30px Arial, sans-serif';
-    ctx.fillText('SMALL IDEA, MEANINGFUL IMPACT', textX, titleY - 78);
-    ctx.fillStyle = colors.paper;
-    const titleFont = layout === 'type' ? 112 : layout === 'swiss' ? 92 : 100;
-    ctx.font = `900 ${titleFont}px Arial, sans-serif`;
-    const titleLines = wrapCanvasText(ctx, title.toUpperCase(), textX, titleY + 40, maxTextWidth, titleFont * 1.12, 4);
-    ctx.fillStyle = colors.paper; ctx.globalAlpha = .9; ctx.font = '400 38px Arial, sans-serif';
-    const descY = titleY + 40 + titleLines * titleFont * 1.12 + 48;
-    wrapCanvasText(ctx, desc, textX, descY, maxTextWidth, 54, 4);
-    ctx.globalAlpha = 1;
-
-    // Ajakan tindakan menjadi penutup poster.
-    roundedRect(ctx, 92, 1500, 1056, 116, 22, colors.accent);
-    ctx.fillStyle = colors.bg; ctx.textAlign = 'center'; ctx.font = '800 34px Arial, sans-serif';
-    wrapCanvasText(ctx, cta.toUpperCase(), 620, 1570, 970, 42, 2);
-    ctx.fillStyle = colors.paper; ctx.font = '600 22px Arial, sans-serif'; ctx.fillText('LMS DKV  ·  STUDENT DESIGN PROJECT', 620, 1680);
+    // Footer call-to-action.
+    const ctaY = 1510;
+    ctx.fillStyle = c.accent;
+    if (layout === 'frame') { ctx.fillRect(180, ctaY - 32, 880, 104); }
+    else if (layout === 'type') { ctx.fillRect(88, ctaY - 32, 1060, 104); }
+    else { ctx.fillRect(92, ctaY - 32, 1056, 104); }
+    ctx.fillStyle = c.bg; ctx.textAlign = 'center'; ctx.font = '900 31px Arial, sans-serif';
+    drawWrapped(ctx, cta, W / 2, ctaY + 28, 980, '900 31px Arial, sans-serif', c.bg, 39, 'center', 2);
+    ctx.fillStyle = c.paper; ctx.globalAlpha = .8; ctx.font = '700 21px Arial, sans-serif'; ctx.fillText('LMS DKV  ·  STUDENT DESIGN PROJECT', W / 2, 1690); ctx.globalAlpha = 1;
     return canvas;
   }
 
-  const downloadButton = $('#poster-download');
-  if (downloadButton) downloadButton.addEventListener('click', () => {
+  function updatePosterPreview() {
+    if (!$liveCanvas || !$preview) return;
+    $preview.classList.remove(
+      'palette-forest','palette-ocean','palette-sunset','palette-editorial','palette-citrus','palette-lavender','palette-mono','palette-coral',
+      'layout-center','layout-split','layout-diagonal','layout-swiss','layout-frame','layout-collage','layout-type','layout-asym',
+      'motif-circles','motif-lines','motif-geometry','motif-grid','motif-waves','motif-cutout','motif-none'
+    );
+    $preview.classList.add(`palette-${$palette.value}`, `layout-${$layout.value}`, `motif-${$motif.value}`);
+    const source = drawPoster();
+    $liveCanvas.width = source.width;
+    $liveCanvas.height = source.height;
+    const ctx = $liveCanvas.getContext('2d');
+    if (ctx) ctx.drawImage(source, 0, 0);
+    if ($exportStatus) $exportStatus.textContent = 'Live canvas diperbarui. Semua pilihan desain sudah diterapkan.';
+  }
+
+  if ($brief) $brief.addEventListener('change', () => {
+    const preset = briefPresets[$brief.value];
+    if (!preset) return;
+    $title.value = preset.title; $desc.value = preset.desc; $cta.value = preset.cta;
+    $palette.value = preset.palette; $layout.value = preset.layout; $motif.value = preset.motif;
+    $$('.style-preset-card').forEach((card) => card.classList.remove('is-selected'));
+    updatePosterPreview();
+    if ($exportStatus) $exportStatus.textContent = `Brief “${$brief.options[$brief.selectedIndex].text}” diterapkan ke live canvas.`;
+  });
+
+  $$('[data-style-preset]').forEach((button) => button.addEventListener('click', () => {
+    if ($brief) $brief.value = 'custom';
+    $palette.value = button.dataset.palette;
+    $layout.value = button.dataset.layout;
+    $motif.value = button.dataset.motif;
+    $$('.style-preset-card').forEach((card) => card.classList.toggle('is-selected', card === button));
+    updatePosterPreview();
+    if ($exportStatus) $exportStatus.textContent = `Gaya ${button.querySelector('b')?.textContent || 'pilihan'} diterapkan ke canvas.`;
+  }));
+
+  [$title, $desc, $cta, $palette, $layout, $motif].forEach((control) => {
+    if (!control) return;
+    control.addEventListener('input', updatePosterPreview);
+    control.addEventListener('change', updatePosterPreview);
+  });
+  // Brief awal langsung diterapkan supaya pilihan dropdown dan live canvas selalu sinkron.
+  if ($brief && briefPresets[$brief.value]) {
+    const initialPreset = briefPresets[$brief.value];
+    $title.value = initialPreset.title; $desc.value = initialPreset.desc; $cta.value = initialPreset.cta;
+    $palette.value = initialPreset.palette; $layout.value = initialPreset.layout; $motif.value = initialPreset.motif;
+  }
+  // Jalankan setelah DOM dan renderer tersedia agar pratinjau awal bukan placeholder.
+  updatePosterPreview();
+
+  if ($download) $download.addEventListener('click', () => {
     try {
       const canvas = drawPoster();
       canvas.toBlob((blob) => {
-        if (!blob) {
-          exportStatus.textContent = 'Ekspor belum berhasil. Coba lagi.';
-          return;
-        }
+        if (!blob) { if ($exportStatus) $exportStatus.textContent = 'Ekspor belum berhasil. Coba lagi.'; return; }
         const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'poster-kampanye-dkv.png';
-        document.body.append(link);
-        link.click();
-        link.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        exportStatus.textContent = 'Poster berhasil diekspor sebagai PNG. Kamu dapat melanjutkan penyuntingan di aplikasi desain.';
+        const link = document.createElement('a'); link.href = url; link.download = 'poster-kampanye-dkv.png';
+        document.body.append(link); link.click(); link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1200);
+        if ($exportStatus) $exportStatus.textContent = 'Poster berhasil diekspor sebagai PNG.';
       }, 'image/png');
     } catch (error) {
       console.error('Poster export failed:', error);
-      exportStatus.textContent = 'Browser belum dapat mengekspor poster. Coba gunakan Chrome versi terbaru.';
+      if ($exportStatus) $exportStatus.textContent = 'Ekspor belum berhasil. Coba gunakan Chrome versi terbaru.';
     }
   });
 
-  // Fallback klik untuk perangkat layar sentuh: pilih elemen, lalu ketuk slot.
+  // Praktik drag-and-drop dengan fallback ketuk untuk layar sentuh.
   let selectedLayoutItem = null;
-  $$('.wireframe-item').forEach((item) => {
-    item.addEventListener('click', () => {
-      if (item.draggable === false) return;
-      selectedLayoutItem = item;
-      $$('.wireframe-item').forEach((other) => other.classList.toggle('studio-item-selected', other === item));
-      const feedback = $('#layout-feedback');
-      if (feedback) feedback.textContent = `Dipilih: ${item.textContent.trim()}. Sekarang ketuk area poster yang sesuai.`;
-    });
-  });
-  $$('.layout-slot').forEach((slot) => {
-    slot.addEventListener('click', () => {
-      if (!selectedLayoutItem || slot.dataset.terisi === '1') return;
-      try {
-        const transfer = new DataTransfer();
-        transfer.setData('text/plain', selectedLayoutItem.dataset.layout);
-        slot.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: transfer }));
-        selectedLayoutItem = null;
-        $$('.wireframe-item').forEach((item) => item.classList.remove('studio-item-selected'));
-      } catch (_) {
-        const feedback = $('#layout-feedback');
-        if (feedback) feedback.textContent = 'Gunakan drag-and-drop untuk menempatkan elemen pada browser ini.';
-      }
-    });
-  });
+  $$('.wireframe-item').forEach((item) => item.addEventListener('click', () => {
+    if (item.draggable === false) return;
+    selectedLayoutItem = item;
+    $$('.wireframe-item').forEach((other) => other.classList.toggle('studio-item-selected', other === item));
+    const feedback = $('#layout-feedback');
+    if (feedback) feedback.textContent = `Dipilih: ${item.textContent.trim()}. Sekarang ketuk area poster yang sesuai.`;
+  }));
+  $$('.layout-slot').forEach((slot) => slot.addEventListener('click', () => {
+    if (!selectedLayoutItem || slot.dataset.terisi === '1') return;
+    try {
+      const transfer = new DataTransfer(); transfer.setData('text/plain', selectedLayoutItem.dataset.layout);
+      slot.dispatchEvent(new DragEvent('drop', { bubbles:true, cancelable:true, dataTransfer:transfer }));
+      selectedLayoutItem = null;
+      $$('.wireframe-item').forEach((item) => item.classList.remove('studio-item-selected'));
+    } catch (_) {
+      const feedback = $('#layout-feedback'); if (feedback) feedback.textContent = 'Gunakan drag-and-drop untuk menempatkan elemen pada browser ini.';
+    }
+  }));
 
-  // Checklist kualitas proyek.
+  // Checklist proyek dan pratinjau portofolio tetap lokal di perangkat siswa.
   const projectChecks = $$('.project-check-input');
   const projectFill = $('#project-progress-fill');
   const projectText = $('#project-progress-text');
@@ -289,7 +269,6 @@
   projectChecks.forEach((check) => check.addEventListener('change', updateProjectProgress));
   updateProjectProgress();
 
-  // Pratinjau portofolio hanya lokal; tidak mengunggah karya ke backend LMS.
   const portfolioInput = $('#portfolio-file');
   const portfolioWrap = $('#portfolio-preview-wrap');
   const imagePreview = $('#portfolio-image-preview');
@@ -303,21 +282,15 @@
     if (!file) return;
     if (previousObjectUrl) URL.revokeObjectURL(previousObjectUrl);
     previousObjectUrl = URL.createObjectURL(file);
-    portfolioWrap.classList.remove('hidden');
-    imagePreview.classList.add('hidden');
-    pdfPreview.classList.add('hidden');
+    portfolioWrap.classList.remove('hidden'); imagePreview.classList.add('hidden'); pdfPreview.classList.add('hidden');
     if (file.type.startsWith('image/')) {
-      imagePreview.src = previousObjectUrl;
-      imagePreview.classList.remove('hidden');
+      imagePreview.src = previousObjectUrl; imagePreview.classList.remove('hidden');
       fileStatus.textContent = `${file.name} · ${(file.size / 1024).toFixed(1)} KB · pratinjau gambar siap.`;
     } else if (file.type === 'application/pdf') {
-      pdfName.textContent = file.name;
-      pdfOpen.href = previousObjectUrl;
-      pdfPreview.classList.remove('hidden');
+      pdfName.textContent = file.name; pdfOpen.href = previousObjectUrl; pdfPreview.classList.remove('hidden');
       fileStatus.textContent = `${file.name} · ${(file.size / 1024).toFixed(1)} KB · file PDF siap dibuka.`;
     } else {
-      portfolioWrap.classList.add('hidden');
-      fileStatus.textContent = 'Format file belum didukung. Pilih PNG, JPG, WEBP, atau PDF.';
+      portfolioWrap.classList.add('hidden'); fileStatus.textContent = 'Format file belum didukung. Pilih PNG, JPG, WEBP, atau PDF.';
     }
   });
 })();
