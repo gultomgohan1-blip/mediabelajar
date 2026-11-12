@@ -66,9 +66,29 @@
     if (target) target.scrollIntoView({behavior:'smooth',block:'start'});
   }
   function clickStudio(panelId) {
-    const tab = $(`[data-studio-tab="${panelId}"]`);
-    tab?.click();
-    scrollToTarget('design-studio');
+    const studio = $('#design-studio');
+    const panel = $('#'+panelId);
+    if (!studio || !panel) {
+      showToast('Bagian praktik belum termuat. Muat ulang halaman dan coba kembali.');
+      return;
+    }
+    // Tampilkan panel secara langsung agar navigasi sidebar tidak bergantung
+    // pada event click sintetis atau urutan listener dari file lain.
+    $$('.studio-panel', studio).forEach(item => {
+      const active = item === panel;
+      item.classList.toggle('hidden', !active);
+      item.setAttribute('aria-hidden', String(!active));
+      if (active) item.removeAttribute('inert'); else item.setAttribute('inert', '');
+    });
+    $$('[data-studio-tab]', studio).forEach(tab => {
+      const active = tab.dataset.studioTab === panelId;
+      tab.classList.toggle('is-active', active);
+      tab.setAttribute('aria-selected', String(active));
+      tab.setAttribute('tabindex', active ? '0' : '-1');
+    });
+    panel.classList.remove('hidden');
+    panel.removeAttribute('inert');
+    requestAnimationFrame(() => scrollToTarget('design-studio'));
   }
   function showToast(message) {
     let toast = $('#lms-nav-toast');

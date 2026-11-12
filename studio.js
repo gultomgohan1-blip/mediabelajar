@@ -14,7 +14,12 @@
         tab.classList.toggle('is-active', active);
         tab.setAttribute('aria-selected', String(active));
       });
-      studioPanels.forEach((panel) => panel.classList.toggle('hidden', panel.id !== target));
+      studioPanels.forEach((panel) => {
+        const active = panel.id === target;
+        panel.classList.toggle('hidden', !active);
+        panel.setAttribute('aria-hidden', String(!active));
+        if (active) panel.removeAttribute('inert'); else panel.setAttribute('inert', '');
+      });
     });
   });
 
@@ -260,26 +265,98 @@
     }
   });
 
-  // Praktik drag-and-drop dengan fallback ketuk untuk layar sentuh.
+  // Praktik susun layout: mendukung drag-and-drop dan mode pilih-lalu-ketuk.
+  // Mode ketuk mengubah DOM secara langsung, sehingga tidak bergantung pada
+  // dukungan DataTransfer/DragEvent sintetis pada browser ponsel.
   let selectedLayoutItem = null;
-  $$('.wireframe-item').forEach((item) => item.addEventListener('click', () => {
-    if (item.draggable === false) return;
+  const layoutTargets = { navbar: 'slot-1', content: 'slot-2', footer: 'slot-3' };
+  const layoutCopy = {
+    navbar: '<div class="challenge-placed challenge-title"><span>01 / HEADLINE</span><b>JUDUL / IDENTITAS KAMPANYE</b></div>',
+    content: '<div class="challenge-placed challenge-visual"><span>02 / KEY VISUAL</span><b>✳</b><small>ILUSTRASI ATAU FOTO UTAMA</small></div>',
+    footer: '<div class="challenge-placed challenge-cta"><span>03 / CALL TO ACTION</span><b>INFORMASI / AJAKAN</b></div>'
+  };
+  const layoutItems = $$('.wireframe-item');
+  const layoutSlots = $$('.layout-slot');
+  const layoutFeedback = $('#layout-feedback');
+  function updateChallengeProgress() {
+    const count = layoutSlots.filter(slot => slot.dataset.terisi === '1').length;
+    const label = $('#challenge-step-status');
+    const fill = $('#challenge-step-fill');
+    if (label) label.textContent = `${count} dari 3 elemen tersusun`;
+    if (fill) fill.style.width = `${count / 3 * 100}%`;
+  }
+  function chooseLayoutItem(item) {
+    if (!item || item.draggable === false) return;
     selectedLayoutItem = item;
-    $$('.wireframe-item').forEach((other) => other.classList.toggle('studio-item-selected', other === item));
-    const feedback = $('#layout-feedback');
-    if (feedback) feedback.textContent = `Dipilih: ${item.textContent.trim()}. Sekarang ketuk area poster yang sesuai.`;
-  }));
-  $$('.layout-slot').forEach((slot) => slot.addEventListener('click', () => {
-    if (!selectedLayoutItem || slot.dataset.terisi === '1') return;
-    try {
-      const transfer = new DataTransfer(); transfer.setData('text/plain', selectedLayoutItem.dataset.layout);
-      slot.dispatchEvent(new DragEvent('drop', { bubbles:true, cancelable:true, dataTransfer:transfer }));
-      selectedLayoutItem = null;
-      $$('.wireframe-item').forEach((item) => item.classList.remove('studio-item-selected'));
-    } catch (_) {
-      const feedback = $('#layout-feedback'); if (feedback) feedback.textContent = 'Gunakan drag-and-drop untuk menempatkan elemen pada browser ini.';
+    layoutItems.forEach(other => other.classList.toggle('studio-item-selected', other === item));
+    if (layoutFeedback) {
+      layoutFeedback.className = 'challenge-feedback is-info';
+      layoutFeedback.textContent = `Terpilih: ${item.textContent.trim()}. Sekarang ketuk kotak dengan fungsi yang sesuai.`;
     }
-  }));
+  }
+  function placeLayoutItem(item, slot) {
+    if (!item || !slot || slot.dataset.terisi === '1') return;
+    const type = item.dataset.layout;
+    if (layoutTargets[type] !== slot.id) {
+      if (layoutFeedback) {
+        layoutFeedback.className = 'challenge-feedback is-error';
+        layoutFeedback.textContent = 'Belum tepat. Cocokkan fungsi elemen dengan area poster: judul di atas, visual di tengah, dan ajakan di bawah.';
+      }
+      return;
+    }
+    slot.innerHTML = layoutCopy[type];
+    slot.dataset.terisi = '1';
+    slot.classList.add('is-filled');
+    item.draggable = false;
+    item.setAttribute('aria-disabled', 'true');
+    item.classList.remove('studio-item-selected');
+    item.classList.add('is-placed');
+    selectedLayoutItem = null;
+    if (layoutFeedback) {
+      layoutFeedback.className = 'challenge-feedback is-success';
+      layoutFeedback.textContent = 'Bagus! Elemen ditempatkan pada area yang sesuai.';
+    }
+    updateChallengeProgress();
+    if (layoutSlots.length && layoutSlots.every(target => target.dataset.terisi === '1')) {
+      if (layoutFeedback) layoutFeedback.textContent = 'Level 1 selesai! Lanjutkan ke tantangan kontras.';
+      setTimeout(() => {
+        $('#mini-lab .grid')?.classList.add('hidden');
+        $('#level-2')?.classList.remove('hidden');
+        $('#level-2')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+      }, 450);
+    }
+  }
+  layoutItems.forEach(item => {
+    item.addEventListener('click', () => chooseLayoutItem(item));
+    item.addEventListener('dragstart', event => {
+      chooseLayoutItem(item);
+      event.dataTransfer.setData('text/plain', item.dataset.layout);
+      event.dataTransfer.effectAllowed = 'move';
+      if (layoutFeedback) layoutFeedback.textContent = `Menyeret ${item.textContent.trim()}.`;
+    });
+  });
+  layoutSlots.forEach(slot => {
+    const activateSlot = () => { if (selectedLayoutItem) placeLayoutItem(selectedLayoutItem, slot); };
+    slot.addEventListener('click', activateSlot);
+    slot.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); activateSlot(); }
+    });
+    slot.addEventListener('dragover', event => {
+      event.preventDefault();
+      slot.classList.add('is-drop-target');
+    });
+    slot.addEventListener('dragleave', () => slot.classList.remove('is-drop-target'));
+    slot.addEventListener('drop', event => {
+      event.preventDefault();
+      slot.classList.remove('is-drop-target');
+      const type = event.dataTransfer?.getData('text/plain');
+      const item = layoutItems.find(candidate => candidate.dataset.layout === type);
+      if (item) placeLayoutItem(item, slot);
+      // script.js juga mendukung drop desktop; sinkronkan indikator setelah listener itu berjalan.
+      setTimeout(updateChallengeProgress, 0);
+    });
+  });
+  updateChallengeProgress();
 
   // Checklist proyek dan pratinjau portofolio tetap lokal di perangkat siswa.
   const projectChecks = $$('.project-check-input');

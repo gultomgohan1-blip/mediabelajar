@@ -72,3 +72,10 @@ PENGUJIAN SETELAH DEPLOY
 
 SUMBER MATERI
 Pembahasan mengikuti isi buku Desain Grafis SMK Kelas XI (Direktorat Pembinaan SMK, 2013), Bab 1–5. Buku ini disusun dalam konteks Kurikulum 2013 dan untuk kelas XI; guru perlu menyesuaikan urutan/kedalaman dengan CP dan ATP kelas yang digunakan.
+
+PERBAIKAN DESIGN CHALLENGE (versi ini)
+- Navigasi sidebar membuka panel Design Challenge secara langsung.
+- Panel diberi ARIA state agar tab dan konten tetap sinkron.
+- Susun elemen poster mendukung drag-and-drop dan pilih-lalu-ketuk untuk HP.
+- Setelah 3 elemen ditempatkan, Level 2 (kontras) dan Level 3 (hierarki) muncul bertahap.
+- Kuis/SUS dan endpoint Apps Script lama tidak diubah.

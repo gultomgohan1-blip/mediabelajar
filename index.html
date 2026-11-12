@@ -746,12 +746,12 @@
 <div class="studio-status-chip"><span class="studio-live-dot"></span> CREATIVE WORKSPACE // READY</div>
 </div>
 <div aria-label="Area Design Studio" class="studio-tabs" role="tablist">
-<button aria-selected="true" class="studio-tab is-active" data-studio-tab="studio-guided-panel" role="tab" type="button"><span>01</span> Guided Practice</button>
-<button aria-selected="false" class="studio-tab" data-studio-tab="studio-challenge-panel" role="tab" type="button"><span>02</span> Design Challenge</button>
-<button aria-selected="false" class="studio-tab" data-studio-tab="studio-project-panel" role="tab" type="button"><span>03</span> Project &amp; Portfolio</button>
+<button aria-selected="true" class="studio-tab is-active" data-studio-tab="studio-guided-panel" aria-controls="studio-guided-panel" role="tab" type="button"><span>01</span> Guided Practice</button>
+<button aria-selected="false" class="studio-tab" data-studio-tab="studio-challenge-panel" aria-controls="studio-challenge-panel" role="tab" type="button"><span>02</span> Design Challenge</button>
+<button aria-selected="false" class="studio-tab" data-studio-tab="studio-project-panel" aria-controls="studio-project-panel" role="tab" type="button"><span>03</span> Project &amp; Portfolio</button>
 </div>
 <!-- AREA 1: GUIDED PRACTICE -->
-<div class="studio-panel" id="studio-guided-panel" role="tabpanel">
+<div class="studio-panel" id="studio-guided-panel" role="tabpanel" aria-hidden="false">
 <div class="studio-section-heading">
 <div><span class="studio-eyebrow">STEP-BY-STEP WORKSHOP · BAB 01–03</span><h4>01 / Guided Practice — Rancang poster kampanye</h4><p>Mulai dari contoh sederhana. Ubah teks, warna, dan komposisi untuk melihat bagaimana keputusan desain memengaruhi hasil akhir.</p></div>
 <span class="studio-chapter-tag">BAB 01–03</span>
@@ -830,7 +830,11 @@
 </article>
 </div>
 <!-- AREA 2: CHALLENGE - mini lab lama dipertahankan agar alur kuis tetap bekerja -->
-<div class="studio-panel hidden" id="studio-challenge-panel" role="tabpanel">
+<div class="studio-panel hidden" id="studio-challenge-panel" role="tabpanel" aria-hidden="true">
+<div class="challenge-welcome-card">
+  <div class="challenge-welcome-copy"><span class="studio-eyebrow">DESIGN CHALLENGE / BAB 01 &amp; 03</span><h4>Susun poster yang komunikatif.</h4><p>Selesaikan tiga tahap singkat. Kamu bisa menyeret elemen ke kotak atau memilih elemen lalu mengetuk kotak tujuan—pilihan kedua lebih nyaman di HP.</p></div>
+  <div class="challenge-progress-card"><b id="challenge-step-status">0 dari 3 elemen tersusun</b><div class="challenge-progress-track"><span id="challenge-step-fill"></span></div><small>LEVEL 01 · STRUKTUR POSTER</small></div>
+</div>
 <div class="studio-section-heading">
 <div><span class="studio-eyebrow">MISSION // APPLY THE PRINCIPLES</span><h4>02 / Design Challenge — Susun struktur poster</h4><p>Tempatkan judul, visual utama, dan ajakan pada posisi yang tepat. Setelah itu, selesaikan tantangan kontras dan hierarki visual.</p></div>
 <span class="studio-chapter-tag">BAB 01 &amp; 03</span>
@@ -844,16 +848,16 @@
 <div class="rounded-2xl border-2 border-dashed border-slate-300 dark:border-white/20 p-5">
 <p class="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300">Palet Elemen Poster</p>
 <div class="mt-4 space-y-3">
-<button class="layout-component wireframe-item w-full px-4 py-3 text-left border-2 rounded-xl bg-white dark:bg-slate-800" data-layout="navbar" draggable="true" type="button">🟩 Judul dan identitas kampanye</button>
-<button class="layout-component wireframe-item w-full px-4 py-3 text-left border-2 rounded-xl bg-white dark:bg-slate-800" data-layout="content" draggable="true" type="button">🖼️ Visual utama / ilustrasi</button>
-<button class="layout-component wireframe-item w-full px-4 py-3 text-left border-2 rounded-xl bg-white dark:bg-slate-800" data-layout="footer" draggable="true" type="button">➡️ Informasi dan ajakan</button>
+<button class="layout-component wireframe-item w-full px-4 py-3 text-left border-2 rounded-xl bg-white dark:bg-slate-800" data-layout="navbar" aria-label="Pilih elemen judul kampanye" draggable="true" type="button">🟩 Judul dan identitas kampanye</button>
+<button class="layout-component wireframe-item w-full px-4 py-3 text-left border-2 rounded-xl bg-white dark:bg-slate-800" data-layout="content" aria-label="Pilih elemen visual utama" draggable="true" type="button">🖼️ Visual utama / ilustrasi</button>
+<button class="layout-component wireframe-item w-full px-4 py-3 text-left border-2 rounded-xl bg-white dark:bg-slate-800" data-layout="footer" aria-label="Pilih elemen informasi dan ajakan" draggable="true" type="button">➡️ Informasi dan ajakan</button>
 </div>
 </div>
 <div class="poster-canvas rounded-2xl p-4 relative min-h-[320px] flex flex-col justify-between">
 <div class="mx-auto h-1.5 w-16 rounded-full bg-slate-500/60"></div>
-<div class="layout-slot slot-zone min-h-16 flex items-center justify-center border-2 border-dashed rounded-2xl text-sm" data-slot="navbar" id="slot-1">Letakkan judul di sini</div>
-<div class="layout-slot slot-zone min-h-28 flex items-center justify-center border-2 border-dashed rounded-2xl text-sm" data-slot="content" id="slot-2">Letakkan visual utama di sini</div>
-<div class="layout-slot slot-zone min-h-16 flex items-center justify-center border-2 border-dashed rounded-2xl text-sm" data-slot="footer" id="slot-3">Letakkan ajakan/informasi di sini</div>
+<div class="layout-slot slot-zone min-h-16 flex items-center justify-center border-2 border-dashed rounded-2xl text-sm" data-slot="navbar" id="slot-1" role="button" tabindex="0" aria-label="Area judul poster">Letakkan judul di sini</div>
+<div class="layout-slot slot-zone min-h-28 flex items-center justify-center border-2 border-dashed rounded-2xl text-sm" data-slot="content" id="slot-2" role="button" tabindex="0" aria-label="Area visual utama poster">Letakkan visual utama di sini</div>
+<div class="layout-slot slot-zone min-h-16 flex items-center justify-center border-2 border-dashed rounded-2xl text-sm" data-slot="footer" id="slot-3" role="button" tabindex="0" aria-label="Area ajakan poster">Letakkan ajakan/informasi di sini</div>
 </div>
 </div>
 <p aria-live="polite" class="mt-3 text-sm font-semibold" id="layout-feedback"></p>
@@ -862,7 +866,7 @@
 </section>
 </div>
 <!-- AREA 3: PROJECT & PORTFOLIO -->
-<div class="studio-panel hidden" id="studio-project-panel" role="tabpanel">
+<div class="studio-panel hidden" id="studio-project-panel" role="tabpanel" aria-hidden="true">
 <div class="studio-section-heading">
 <div><span class="studio-eyebrow">FINAL PROJECT // BUILD YOUR PORTFOLIO</span><h4>03 / Project &amp; Portfolio — Bangun portofolio</h4><p>Gunakan hasil latihan sebagai bekal. Buat karya final di aplikasi desain pilihanmu, kemudian periksa menggunakan kriteria berikut.</p></div>
 <span class="studio-chapter-tag">PROYEK AKHIR</span>
