@@ -1,70 +1,74 @@
-LMS DKV — KREASI COLORFUL CREATIVE ACADEMY
-Redesign menyeluruh dengan arah visual colorful: hangat, cerah, editorial, dan ekspresif.
+KREASI DKV — CREATIVE LEARNING ACADEMY
+Redesign berdasarkan hasil wawancara pengguna.
 
-ISI PAKET (semua file berada langsung di root ZIP)
-- index.html : identitas, lima bab pembahasan, Design Studio, kuis, dan angket SUS.
-- style.css  : sistem visual Colorful Creative Academy, layout responsif, galeri visual, dan komponen interaktif.
-- script.js  : navigasi utama, latihan materi, kuis, SUS, perhitungan skor, dan pengiriman Google Apps Script.
-- studio.js  : editor poster PNG, preset brief, pilihan desain, simulator scanner, inventaris aset, tantangan layout, dan portofolio lokal.
-- README.txt : petunjuk penggunaan dan sumber visual.
+RANGKUMAN KEPUTUSAN DESAIN
+1. Sistem belajar hybrid: ada urutan yang direkomendasikan, tetapi materi dan praktik dapat diulang/dibuka kembali.
+2. Navigasi utama: sidebar desktop, drawer + navigasi cepat pada HP.
+3. Materi: Hybrid Visual + Editorial; kartu ringkasan dan detail materi yang lebih lengkap.
+4. Praktik: kombinasi latihan per bab dan ruang khusus Design Studio.
+5. Visual: gabungan referensi karya eksternal beratribusi dan diagram/ilustrasi pembelajaran.
+6. Portofolio: galeri lokal di perangkat siswa + opsi kirim ke penyimpanan kelas melalui Apps Script terpisah.
 
-ARAH VISUAL
-- Identitas halaman pembuka menggunakan dua kolom: area pengenalan yang ekspresif dan kartu identitas siswa.
-- Hero materi menggunakan komposisi asimetris, tipografi display, aksen coral, cobalt, lemon, mint, dan violet.
-- Lima kartu bab memiliki warna dan simbol berbeda agar navigasi mudah dikenali.
-- Pembahasan memakai kartu materi, blok sorotan, visual utama, serta galeri referensi per bab.
-- Design Studio memakai panel warna cerah, kontrol yang lebih jelas, dan area canvas kontras.
-- Kuis, hasil, dan SUS menggunakan kartu dengan kontras yang mudah dibaca.
-- Mode gelap tetap tersedia lewat tombol tema.
+ISI PAKET
+- index.html
+- style.css
+- script.js (dipertahankan identik; jangan edit untuk redesign)
+- studio.js (editor poster, scan lab, asset hunter, challenge)
+- app-navigation.js (sidebar, drawer HP, rute belajar, progres bab lokal)
+- portfolio.js (portofolio lokal IndexedDB + pengiriman opsional ke Apps Script)
+- PORTFOLIO_APPS_SCRIPT.gs (backend opsional untuk penyimpanan Drive dan pencatatan Sheet)
 
-REFERENSI VISUAL INTERNET DAN KREDIT
-Gambar eksternal dimuat langsung dari situs asal. Setiap kartu/figure memiliki tautan sumber. Pemilik hak cipta tetap pihak pembuat/penerbit:
-1. California State University, Long Beach — INSIGHTS 2023 Student Show poster: https://www.csulb.edu/school-of-art/article/insights-2023-school-art-student-show
-2. Kenan Yiğit — SALT Typographic Poster Series (Behance): https://www.behance.net/gallery/173354975/TYPOGRAPHIC-POSTER-DESIGN-FOR-SALT
-3. Buzzvel — Colour Theory Infographic: https://buzzvel.com/blog/the-psychology-of-colors-in-uiux
-4. Presentation Team — Vector vs Bitmap: https://www.presentationteam.com/bitmap-and-vector-graphics-in-presentations/
-5. Webdesign Journal — Broken-grid design examples: https://www.webdesign-journal.de/grafik-design-trends-stile/
-6. Warriors Studio — Graphic Design Festival Scotland identity: https://warriorsstudio.com/projects/graphic-design-festival-scotland-2016-identity
-7. Ceedo — Colour accuracy in scanners for artwork: https://www.ceedo.com/color-accuracy-in-scanners-for-artwork/
-8. Xtrme — Professional art reproduction: https://print.xtrme.com/preserving-the-original-how-professional-art-reproduction-brings-artwork-to-life
-9. Rebecca Stephany — Poster archive: https://rebeccastephany.com/
-10. Vantura Digital — Brand identity workspace: https://vanturadigital.com/
+CARA UPLOAD KE GITHUB PAGES
+1. Ekstrak ZIP.
+2. Unggah semua file frontend berikut langsung ke ROOT repository: index.html, style.css, script.js, studio.js, app-navigation.js, portfolio.js.
+3. Jangan upload PORTFOLIO_APPS_SCRIPT.gs sebagai file web biasa. File itu untuk Google Apps Script (lihat bagian berikutnya).
+4. Commit changes.
+5. GitHub Pages tetap menggunakan branch main dan folder /(root).
+6. Buka website dengan Ctrl+Shift+R setelah deployment selesai.
 
-Penting tentang gambar:
-- Situs sumber dapat mengubah URL, membatasi hotlink, atau mengubah akses. Jika gambar tidak tampil, kartu memiliki warna fallback; ganti src dengan gambar milik sendiri atau gambar yang izinnya sesuai.
-- Untuk publikasi/penilaian resmi, pastikan penggunaan gambar eksternal sesuai lisensi dan ketentuan pemiliknya. Tautan sumber/kredit disediakan agar karya dapat ditelusuri.
-- Contoh karya di galeri adalah referensi untuk dianalisis, bukan karya siswa LMS.
+PENGUMPULAN PORTOFOLIO TERINTEGRASI KE GURU (OPSIONAL, BUTUH SETUP)
+Penting: galeri portofolio langsung bekerja secara lokal dengan IndexedDB. Agar guru dapat menerima file di Google Drive, siapkan backend terpisah berikut. Endpoint kuis/SUS yang lama TIDAK diganti atau disentuh.
 
-PEMBAHASAN MATERI (mengikuti buku yang dilampirkan)
-1. Unsur tata letak: garis, bidang, ilustrasi, bitmap/vektor, tipografi, warna, gelap-terang, tekstur, dan ruang.
-2. Fungsi, komponen, dan model warna: persepsi warna, roda warna, RGB, CMYK, HSL, Lab, gamut, warna proses, dan spot color.
-3. Prinsip tata letak: proporsi, golden ratio, keseimbangan, irama, kontras, kesatuan, harmoni, grid, margin, kolom, dan bleed.
-4. Scanner: jenis, komponen, cara kerja, pengaturan, resolusi, proses pemindaian, dan format hasil.
-5. Data digital melalui internet: browser, download, upload, pengelolaan file, keamanan, dan domain.
-Sumber utama: buku Desain Grafis SMK Kelas XI, Direktorat Pembinaan SMK, 2013 (Bab 1–5). Buku ditujukan untuk Kelas XI dalam konteks Kurikulum 2013; guru perlu menyesuaikan kedalaman/urutan dengan CP dan ATP yang berlaku.
+A. Siapkan Apps Script baru
+1. Buka https://script.google.com/ dan buat project baru, misalnya "KREASI DKV Portfolio".
+2. Salin seluruh isi PORTFOLIO_APPS_SCRIPT.gs ke Code.gs.
+3. Pilih fungsi setupPortfolioStorage lalu klik Run satu kali. Berikan izin Drive dan Spreadsheet. Hasil log berisi URL folder Drive dan spreadsheet daftar pengumpulan.
+4. Pastikan folder dan spreadsheet tetap privat di akun guru/administrator. Jangan mengubah akses folder menjadi publik.
+5. Deploy > New deployment > Select type: Web app.
+6. Execute as: Me. Who has access: Anyone (diperlukan untuk form submission dari GitHub Pages; batasi distribusi URL dan pantau daftar pengumpulan).
+7. Salin URL Web App yang berakhiran /exec.
 
-DESIGN STUDIO
-- 10 preset tema brief + brief bebas: lingkungan/plastik, hemat air, hemat energi, literasi digital, kesehatan, anti-perundungan, budaya lokal, daur ulang, membaca, dan sekolah bersih.
-- 8 palet warna: Forest, Ocean, Sunset, Editorial, Citrus, Lavender, Monochrome, dan Coral.
-- 8 komposisi layout: Center, Split, Diagonal, Swiss, Frame, Collage, Type-led, dan Asymmetrical.
-- 7 pilihan motif: Circles, Lines, Geometry, Grid, Waves, Cut-out, dan None.
-- 6 preset gaya: Swiss Editorial, Type Explosion, Neo Pop, Organic Flow, Modern Split, Dynamic Cut.
-- Canvas A4 diperbarui dari pilihan tema, palet, layout, motif, headline, deskripsi, dan ajakan. Hasil dapat diekspor PNG.
-- Scan Lab dan Asset Hunter adalah simulator/latihan. Inventaris aset hanya disimpan sementara pada tampilan sesi.
-- Pratinjau portofolio berjalan lokal. File karya tidak dikirim ke server LMS.
+B. Hubungkan endpoint portofolio ke web
+1. Di repository GitHub, buka portfolio.js lalu klik Edit.
+2. Temukan baris const PORTFOLIO_ENDPOINT = '';
+3. Tempel URL Web App di antara tanda kutip, contoh: const PORTFOLIO_ENDPOINT = 'https://script.google.com/macros/s/...../exec';
+4. Commit perubahan.
+5. Tombol "Kirim ke guru" akan aktif setelah halaman dimuat ulang.
+
+CATATAN PRIVASI DAN KEAMANAN
+- Form menggunakan kode siswa dan kelas, bukan nama lengkap. Jangan meminta alamat rumah, nomor telepon, atau data pribadi lain dalam catatan proyek.
+- File diterima ke folder Drive milik administrator dan tidak otomatis dibagikan ke publik.
+- Endpoint Apps Script dengan akses Anyone dapat menerima permintaan dari siapa pun yang memperoleh URL. URL di frontend bukan rahasia. Administrator harus memeriksa pengumpulan, kuota, dan aktivitas mencurigakan. Untuk penggunaan produksi berskala besar, gunakan autentikasi institusi dan penyimpanan yang dikelola sekolah.
+- Batas ukuran berkas 5 MB; format PNG/JPG/WEBP/PDF.
+- Hasil yang tersimpan di IndexedDB hanya tersedia pada browser/perangkat yang sama. Hapus data browser dapat menghapus salinan lokal; kirim ke Drive untuk salinan guru.
 
 FITUR YANG DIPERTAHANKAN
-- script.js dipertahankan identik dari versi sebelumnya.
-- Kuis tetap 15 soal, 45 detik per soal.
-- Payload pengiriman tetap: kodeSiswa, skorKuis, skorSus.
-- Perhitungan SUS dan 10 pernyataannya tidak diubah.
-- URL Google Apps Script tidak diubah.
-Catatan: pengiriman aktual ke Google Apps Script belum dapat diverifikasi dari ZIP lokal. Uji kembali melalui domain GitHub Pages setelah deploy. Jangan memasukkan kredensial rahasia atau data pribadi siswa ke repository publik.
+- script.js disalin byte-for-byte dari versi Colorful Mobile Contrast.
+- API_URL kuis/SUS tetap sama.
+- Payload pengiriman tetap {kodeSiswa, skorKuis, skorSus}.
+- Kuis 15 soal dengan timer 45 detik per soal.
+- 10 butir SUS dan rumus skornya tidak diubah.
+- portfolio.js menggunakan endpoint terpisah; tidak menggantikan endpoint pengiriman kuis/SUS.
 
-UPLOAD KE GITHUB PAGES
-1. Ekstrak ZIP.
-2. Unggah kelima file di atas langsung ke root repository (folder utama), bukan ke subfolder.
-3. Ganti index.html dan style.css; tambahkan/perbarui studio.js; script.js disertakan dengan isi yang sama.
-4. Pastikan Settings > Pages menggunakan branch main dan folder /(root).
-5. Setelah deployment selesai, buka website dan tekan Ctrl + F5.
-6. Uji identitas, lima tab materi, galeri gambar, tab Design Studio, pergantian brief/palet/layout/motif, ekspor PNG, tantangan layout, kuis, SUS, dan pengiriman data.
+PENGUJIAN SETELAH DEPLOY
+1. Login dengan kode format S01–S999 dan pilih kelas.
+2. Buka sidebar: ringkasan, materi, bab, Guided Practice, Design Challenge, Project & Portfolio.
+3. Tandai satu bab selesai dan pastikan progres sidebar berubah.
+4. Coba brief Hemat Air, ganti palet, layout, motif, lalu ekspor PNG.
+5. Tambahkan satu karya uji ke portofolio lokal; refresh halaman dan pastikan masih muncul di galeri.
+6. Jika endpoint portofolio sudah disiapkan, kirim satu file uji kecil dan pastikan file masuk Drive serta baris tercatat di Sheet.
+7. Selesaikan kuis dan SUS; pastikan data dikirim ke endpoint lama seperti sebelumnya.
+8. Uji HP: buka drawer sidebar, coba quick navigation, pastikan tidak ada scroll horizontal.
+
+SUMBER MATERI
+Pembahasan mengikuti isi buku Desain Grafis SMK Kelas XI (Direktorat Pembinaan SMK, 2013), Bab 1–5. Buku ini disusun dalam konteks Kurikulum 2013 dan untuk kelas XI; guru perlu menyesuaikan urutan/kedalaman dengan CP dan ATP kelas yang digunakan.

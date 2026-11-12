@@ -3,8 +3,9 @@
 <html class="scroll-smooth" lang="id">
 <head>
 <meta charset="utf-8"/>
+<meta name="description" content="Media pembelajaran desain grafis DKV dengan materi visual, praktik terpandu, tantangan, dan portofolio siswa."/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>KREASI DKV — Creative Learning Studio</title>
+<title>KREASI DKV — Creative Learning Academy</title>
 <!-- Fonts: Plus Jakarta Sans + DM Sans + Fraunces + Space Grotesk -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -26,8 +27,9 @@
 </div>
 <!-- ================= NAVBAR ================= -->
 <header class="sticky top-0 z-50 px-4 pt-4">
-<nav class="max-w-5xl mx-auto flex items-center justify-between gap-3 px-5 py-3 rounded-3xl bg-white/70 backdrop-blur-md dark:bg-black/75 border border-white/60 dark:border-white/10 shadow-sm">
+<nav class="site-topnav max-w-none mx-auto flex items-center justify-between gap-3 px-5 py-3 rounded-3xl bg-white/70 backdrop-blur-md dark:bg-black/75 border border-white/60 dark:border-white/10 shadow-sm">
 <div class="flex items-center gap-3">
+<button aria-label="Buka navigasi" aria-expanded="false" class="mobile-menu-toggle" id="mobile-menu-toggle" type="button"><span></span><span></span><span></span></button>
 <div class="brand-mark"><span>K</span><i>✳</i></div>
 <span class="brand-wordmark">KREASI<span>DKV.</span></span>
 </div>
@@ -51,7 +53,40 @@
 </ol>
 </div>
 </div>
-<main class="max-w-5xl mx-auto px-4 py-10 space-y-10">
+<main class="lms-workspace" id="lms-workspace">
+<aside aria-label="Navigasi pembelajaran" class="lms-sidebar" id="lms-sidebar">
+  <div class="sidebar-brandline"><span class="sidebar-brand-icon">K</span><div><b>KREASI DKV</b><small>CREATIVE ACADEMY</small></div></div>
+  <div class="sidebar-student" id="sidebar-student-card"><span class="student-avatar">✳</span><div><b id="sidebar-student-code">SISWA DKV</b><small id="sidebar-student-class">Kelas X DKV</small></div></div>
+  <div class="sidebar-caption">RUANG BELAJAR</div>
+  <nav class="sidebar-menu" aria-label="Menu utama">
+    <button class="sidebar-link is-active" data-shell-nav="overview" type="button"><span class="sidebar-link-icon">⌂</span><span>Ringkasan</span><small>01</small></button>
+    <button class="sidebar-link" data-shell-nav="materials" type="button"><span class="sidebar-link-icon">▤</span><span>Materi &amp; Pembahasan</span><small>02</small></button>
+    <div class="sidebar-chapter-list" aria-label="Daftar bab">
+      <button data-shell-chapter="tab-1" type="button"><span>01</span> Unsur tata letak</button>
+      <button data-shell-chapter="tab-2" type="button"><span>02</span> Warna</button>
+      <button data-shell-chapter="tab-3" type="button"><span>03</span> Prinsip layout</button>
+      <button data-shell-chapter="tab-4" type="button"><span>04</span> Scanner</button>
+      <button data-shell-chapter="tab-5" type="button"><span>05</span> Data internet</button>
+    </div>
+    <div class="sidebar-caption sidebar-caption-spaced">RUANG PRAKTIK</div>
+    <button class="sidebar-link" data-shell-nav="guided" type="button"><span class="sidebar-link-icon">✳</span><span>Guided Practice</span><small>03</small></button>
+    <button class="sidebar-link" data-shell-nav="challenge" type="button"><span class="sidebar-link-icon">⚡</span><span>Design Challenge</span><small>04</small></button>
+    <button class="sidebar-link" data-shell-nav="portfolio" type="button"><span class="sidebar-link-icon">▧</span><span>Project &amp; Portfolio</span><small>05</small></button>
+    <div class="sidebar-caption sidebar-caption-spaced">EVALUASI</div>
+    <button class="sidebar-link" data-shell-nav="quiz" type="button"><span class="sidebar-link-icon">✓</span><span>Kuis</span><small>06</small></button>
+    <button class="sidebar-link" data-shell-nav="sus" type="button"><span class="sidebar-link-icon">♡</span><span>Angket SUS</span><small>07</small></button>
+  </nav>
+  <div class="sidebar-progress-card">
+    <div class="sidebar-progress-head"><b>Progres materi</b><span id="sidebar-progress-count">0/5</span></div>
+    <div class="sidebar-progress-track"><span id="sidebar-progress-fill"></span></div>
+    <p> Tandai bab selesai setelah kamu mempelajarinya.</p>
+  </div>
+  <div class="sidebar-footer-note">OBSERVE · LEARN · EXPLORE · CREATE</div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="lms-main-column" id="lms-main-column">
+  <div class="mobile-contextbar" id="mobile-contextbar"><div><span>CREATIVE LEARNING PATH</span><b id="mobile-context-title">Ringkasan belajar</b></div><span class="mobile-context-index">DKV / X</span></div>
+  <div class="page-content" id="lms-page-content">
 <!-- ================= SECTION 0 : IDENTITAS ================= -->
 <section class="page" id="section-0">
 <div class="welcome-layout">
@@ -98,7 +133,7 @@
 </section>
 <!-- ================= SECTION 1 : MATERI DESAIN GRAFIS ================= -->
 <section class="page hidden space-y-8" id="section-1">
-<div class="course-intro">
+<div class="course-intro" id="course-overview">
 <div class="course-hero-grid">
 <div class="course-hero-copy">
 <div class="course-eyebrow-row">
@@ -155,9 +190,10 @@
 <p class="font-bold">Tentang sumber belajar</p>
 <p class="mt-2 text-sm">Pembahasan diadaptasi dengan bahasa pembelajaran dari buku <i>Desain Grafis SMK Kelas XI</i> terbitan Direktorat Pembinaan SMK (2013), terutama Bab 1–5. Karena buku menggunakan konteks Kurikulum 2013 dan ditujukan untuk kelas XI, penggunaannya sebagai bahan rujukan/pengayaan perlu disesuaikan dengan ATP dan arahan guru.</p>
 </div>
-<p class="visual-credit-note">Referensi visual berasal dari SAIC, Logomakerr, dan Behance. Gambar dipakai sebagai bahan pengamatan; hak cipta tetap pada pemilik masing-masing.</p>
+<p class="visual-credit-note">Referensi visual berasal dari CSULB, Behance, Buzzvel, Presentation Team, dan sumber terkait yang ditautkan pada tiap gambar. Karya dipakai sebagai bahan pengamatan; hak cipta tetap pada pemilik masing-masing.</p>
 </div>
 </div>
+<div class="course-route-callout"><div><span class="course-route-label">YOUR CREATIVE JOURNEY</span><b>Belajar dengan urutan yang jelas, tetapi tetap bebas mengeksplorasi.</b><small>Mulai dari materi, ikuti latihan, coba tantangan, lalu simpan karya. Kamu boleh mengulang bab kapan saja.</small></div><div class="route-stats"><span><b>05</b><small>Bab</small></span><span><b>03</b><small>Praktik</small></span><span><b>01</b><small>Portofolio</small></span></div></div>
 <div class="chapter-nav-wrap" id="course-chapters">
 <div class="chapter-nav-intro"><div><span class="chapter-nav-kicker">THE LEARNING PATH</span><h3>Pilih bab, bangun kemampuan.</h3></div><p>Ikuti urutan materi dari dasar visual sampai pengelolaan aset digital.</p></div>
 <!-- Navigasi bab sesuai urutan buku sumber -->
@@ -282,7 +318,7 @@
 </section>
 <div class="lesson-check mt-7 p-5 rounded-2xl"><p class="font-bold">Latihan pengamatan</p><p class="mt-2 text-sm">Ambil satu poster atau sampul. Catat contoh garis, bidang, ilustrasi, tipografi, warna, gelap-terang, tekstur, dan ruang yang terlihat. Jelaskan fungsi masing-masing unsur, bukan hanya menyebut namanya.</p></div>
 <p class="mt-5 text-xs text-slate-400">Acuan buku: Bab 1, halaman cetak 11–44 (unsur garis, bidang, ilustrasi, tipografi, warna, gelap-terang, tekstur, dan ruang).</p>
-</article>
+<div class="chapter-completion-bar"><div><span class="completion-overline">CHECKPOINT / BAB 01</span><b>Sudah memahami unsur tata letak?</b><small>Tandai bab ini selesai. Kamu tetap bisa membukanya kembali kapan saja.</small></div><button class="mark-chapter-btn" data-mark-chapter="tab-1" type="button">Tandai selesai ✓</button></div></article>
 <!-- BAB 2 -->
 <article class="tab-panel discussion-panel hidden p-8 rounded-3xl" id="tab-2">
 <span class="discussion-kicker text-xs font-bold uppercase tracking-widest">BAB 02 · FUNGSI, KOMPONEN, DAN MODEL WARNA</span>
@@ -394,7 +430,7 @@
 </section>
 <div class="lesson-check mt-7 p-5 rounded-2xl"><p class="font-bold">Latihan penerapan</p><p class="mt-2 text-sm">Pilih satu karya yang akan ditampilkan di layar dan satu karya yang akan dicetak. Tentukan model warna yang sesuai untuk masing-masing. Buat dua palet berbeda, lalu jelaskan alasan pemilihan warna, hubungan antarwarna, dan kemungkinan perubahan saat dicetak.</p></div>
 <p class="mt-5 text-xs text-slate-400">Acuan buku: Bab 2, halaman cetak 45–70 (pengertian warna, jenis kombinasi, warna aditif/subtraktif, model warna, gamut, spot/process color, serta fungsi dan karakter warna).</p>
-</article>
+<div class="chapter-completion-bar"><div><span class="completion-overline">CHECKPOINT / BAB 02</span><b>Sudah memahami fungsi, komponen, dan model warna?</b><small>Tandai bab ini selesai. Kamu tetap bisa membukanya kembali kapan saja.</small></div><button class="mark-chapter-btn" data-mark-chapter="tab-2" type="button">Tandai selesai ✓</button></div></article>
 <!-- BAB 3 -->
 <article class="tab-panel discussion-panel hidden p-8 rounded-3xl" id="tab-3">
 <span class="discussion-kicker text-xs font-bold uppercase tracking-widest">BAB 03 · PRINSIP TATA LETAK</span>
@@ -486,7 +522,7 @@
 </section>
 <div class="lesson-check mt-7 p-5 rounded-2xl"><p class="font-bold">Latihan evaluasi layout</p><p class="mt-2 text-sm">Bandingkan dua poster. Catat bagian yang menjadi fokus, apakah komposisinya simetris atau asimetris, pola pengulangannya, bentuk kontrasnya, serta cara warna, huruf, dan ilustrasi membangun kesatuan dan harmoni.</p></div>
 <p class="mt-5 text-xs text-slate-400">Acuan buku: Bab 3, halaman cetak 71–98 (proporsi, golden section, keseimbangan, irama, kontras, kesatuan, harmoni, grid system, margin, kolom, master page, dan bleed).</p>
-</article>
+<div class="chapter-completion-bar"><div><span class="completion-overline">CHECKPOINT / BAB 03</span><b>Sudah memahami prinsip tata letak?</b><small>Tandai bab ini selesai. Kamu tetap bisa membukanya kembali kapan saja.</small></div><button class="mark-chapter-btn" data-mark-chapter="tab-3" type="button">Tandai selesai ✓</button></div></article>
 <!-- BAB 4 -->
 <article class="tab-panel discussion-panel hidden p-8 rounded-3xl" id="tab-4">
 <span class="discussion-kicker text-xs font-bold uppercase tracking-widest">BAB 04 · PEMINDAIAN GAMBAR / ILUSTRASI / TEKS</span>
@@ -561,7 +597,7 @@
 </section>
 <div class="lesson-check mt-7 p-5 rounded-2xl"><p class="font-bold">Latihan praktik scanner</p><p class="mt-2 text-sm">Pindai satu sketsa atau foto yang kamu miliki dengan izin pemiliknya. Catat jenis scanner, mode warna, resolusi, format file, serta perubahan yang terlihat setelah disimpan. Bandingkan hasilnya saat ditampilkan di layar.</p></div>
 <p class="mt-5 text-xs text-slate-400">Acuan buku: Bab 4, halaman cetak 100–125 (jenis scanner, tujuan, fungsi, komponen, cara kerja, kualitas/model, teknik penggunaan, dan penyimpanan hasil scan).</p>
-</article>
+<div class="chapter-completion-bar"><div><span class="completion-overline">CHECKPOINT / BAB 04</span><b>Sudah memahami proses pemindaian dengan scanner?</b><small>Tandai bab ini selesai. Kamu tetap bisa membukanya kembali kapan saja.</small></div><button class="mark-chapter-btn" data-mark-chapter="tab-4" type="button">Tandai selesai ✓</button></div></article>
 <!-- BAB 5 -->
 <article class="tab-panel discussion-panel hidden p-8 rounded-3xl" id="tab-5">
 <span class="discussion-kicker text-xs font-bold uppercase tracking-widest">BAB 05 · DATA DIGITAL MELALUI INTERNET</span>
@@ -658,7 +694,7 @@
 </section>
 <div class="lesson-check mt-7 p-5 rounded-2xl"><p class="font-bold">Latihan pengelolaan aset</p><p class="mt-2 text-sm">Cari satu gambar yang lisensinya mengizinkan penggunaan untuk tugas. Catat nama pembuat, sumber, jenis lisensi, format, dan resolusinya. Unduh, simpan dalam folder proyek, lalu buat satu catatan singkat tentang alasan gambar tersebut sesuai dengan tema desainmu.</p></div>
 <p class="mt-5 text-xs text-slate-400">Acuan buku: Bab 5, halaman cetak 127–149 (internet, manfaat, browser, download, upload, penyimpanan digital, dan nama ranah/domain). Contoh layanan tahun 2013 telah diperbarui secara konseptual agar aman dan relevan untuk praktik saat ini.</p>
-<p class="image-usage-note">Gambar pada bagian ini digunakan sebagai referensi pembelajaran dan tetap menjadi hak pemilik/sumber aslinya. Untuk karya siswa, periksa izin dan lisensi sebelum menggunakan kembali aset.</p></article>
+<p class="image-usage-note">Gambar pada bagian ini digunakan sebagai referensi pembelajaran dan tetap menjadi hak pemilik/sumber aslinya. Untuk karya siswa, periksa izin dan lisensi sebelum menggunakan kembali aset.</p><div class="chapter-completion-bar"><div><span class="completion-overline">CHECKPOINT / BAB 05</span><b>Sudah memahami pengelolaan data digital?</b><small>Tandai bab ini selesai. Kamu tetap bisa membukanya kembali kapan saja.</small></div><button class="mark-chapter-btn" data-mark-chapter="tab-5" type="button">Tandai selesai ✓</button></div></article>
 <!-- PENGAYAAN -->
 <div class="p-8 rounded-3xl bg-white/70 backdrop-blur-md dark:bg-black/75 border border-white/60 dark:border-white/10 shadow-lg">
 <h3 class="text-xl font-extrabold">Pengayaan dan Ringkasan Belajar</h3>
@@ -695,6 +731,11 @@
 </div>
 </div>
 <!-- DESIGN STUDIO: praktik terpandu, tantangan, dan portofolio -->
+<section class="practice-path-strip" aria-label="Alur praktik">
+  <div><span>01</span><b>Guided Practice</b><small>Ikuti contoh dan tutorial</small></div><i>→</i>
+  <div><span>02</span><b>Design Challenge</b><small>Uji keputusan desain</small></div><i>→</i>
+  <div><span>03</span><b>Project &amp; Portfolio</b><small>Buat dan kumpulkan karya</small></div>
+</section>
 <section class="design-studio-shell p-6 sm:p-8 rounded-3xl space-y-6" id="design-studio">
 <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
 <div>
@@ -845,14 +886,30 @@
 <p class="studio-feedback" id="project-progress-text">0 dari 5 pemeriksaan selesai.</p>
 </div>
 </div>
-<div class="project-upload-card">
-<div><span class="studio-eyebrow">MY PORTFOLIO</span><h5>Pratinjau karya akhir</h5><p>Pilih gambar hasil desain dari perangkatmu untuk melihat pratinjau. File hanya ditampilkan di browser ini dan tidak dikirim ke server LMS.</p></div>
-<label class="studio-upload-btn" for="portfolio-file">＋ Pilih karya (PNG / JPG / WEBP / PDF)</label>
-<input accept="image/png,image/jpeg,image/webp,application/pdf" class="sr-only" id="portfolio-file" type="file"/>
-<div class="portfolio-preview-wrap hidden" id="portfolio-preview-wrap"><img alt="Pratinjau karya siswa" class="hidden" id="portfolio-image-preview"/><div class="hidden" id="portfolio-pdf-preview"><span>PDF</span><b id="portfolio-pdf-name"></b><a id="portfolio-pdf-open" rel="noopener" target="_blank">Buka file PDF ↗</a></div></div>
-<p aria-live="polite" class="studio-feedback" id="portfolio-file-status">Belum ada file yang dipilih.</p>
+<div class="portfolio-hub-card" id="portfolio-hub">
+  <div class="portfolio-hub-heading"><div><span class="studio-eyebrow">MY CREATIVE ARCHIVE</span><h5>Portofolio karya siswa</h5><p>Simpan hasil karya di perangkat ini, lalu kirim ke ruang pengumpulan guru setelah endpoint portofolio kelas diaktifkan.</p></div><span class="portfolio-count-chip" id="portfolio-count-chip">0 KARYA</span></div>
+  <div class="portfolio-form-grid">
+    <div class="portfolio-form-fields">
+      <label for="portfolio-title">Judul karya</label><input id="portfolio-title" maxlength="70" placeholder="Contoh: Setetes Air, Berarti" type="text"/>
+      <label for="portfolio-theme">Tema proyek</label><select id="portfolio-theme"><option value="Kampanye lingkungan">Kampanye lingkungan</option><option value="Hemat air">Hemat air</option><option value="Hemat energi">Hemat energi</option><option value="Literasi digital">Literasi digital</option><option value="Budaya lokal">Budaya lokal</option><option value="Kesehatan">Kesehatan</option><option value="Sekolah bersih">Sekolah bersih</option><option value="Tema bebas">Tema bebas</option></select>
+      <label for="portfolio-note">Catatan proses (opsional)</label><textarea id="portfolio-note" rows="3" maxlength="350" placeholder="Ceritakan konsep, palet warna, atau prinsip desain yang kamu terapkan."></textarea>
+      <label class="portfolio-file-picker" for="portfolio-file"><span>＋</span><b>Pilih file karya</b><small>PNG, JPG, WEBP, PDF · Maks. 5 MB</small></label>
+      <input accept="image/png,image/jpeg,image/webp,application/pdf" class="sr-only" id="portfolio-file" type="file"/>
+      <div class="portfolio-action-row"><button class="portfolio-save-btn" id="portfolio-save-btn" type="button">Simpan ke portofolio</button><button class="portfolio-submit-btn" id="portfolio-submit-btn" type="button" disabled>Kirim ke guru ↗</button></div>
+      <p class="portfolio-system-status" id="portfolio-storage-status" aria-live="polite">Portofolio lokal siap digunakan. Pengiriman guru perlu endpoint kelas.</p>
+    </div>
+    <div class="portfolio-preview-stage"><div class="portfolio-preview-label">PREVIEW KARYA</div>
+      <div class="portfolio-preview-wrap hidden" id="portfolio-preview-wrap"><img alt="Pratinjau karya siswa" class="hidden" id="portfolio-image-preview"/><div class="hidden" id="portfolio-pdf-preview"><span>PDF</span><b id="portfolio-pdf-name"></b><a id="portfolio-pdf-open" rel="noopener" target="_blank">Buka file PDF ↗</a></div></div>
+      <div class="portfolio-empty-preview" id="portfolio-empty-preview"><span>✳</span><b>Karya kamu akan tampil di sini</b><small>Unggah desain yang sudah kamu ekspor dari aplikasi pilihanmu.</small></div>
+      <p aria-live="polite" class="studio-feedback" id="portfolio-file-status">Belum ada file yang dipilih.</p>
+    </div>
+  </div>
+  <div class="portfolio-gallery-heading"><div><span class="studio-eyebrow">STUDENT COLLECTION</span><b>Koleksi portofolioku</b></div><span id="portfolio-gallery-total">0 item tersimpan</span></div>
+  <div class="portfolio-gallery-grid" id="portfolio-gallery"><div class="portfolio-gallery-empty">Belum ada karya. Simpan karya pertamamu untuk membangun portofolio.</div></div>
+  <div class="portfolio-teacher-note"><b>Pengumpulan terintegrasi:</b> karya disimpan secara lokal terlebih dahulu. Untuk mengirimnya ke Drive dan daftar pengumpulan guru, administrator kelas perlu menyiapkan endpoint Apps Script terpisah. Pengiriman kuis dan SUS tetap menggunakan endpoint lama yang tidak diubah.</div>
 </div>
-<div class="studio-learning-note"><b>Catatan pengumpulan:</b> pratinjau ini bersifat lokal. Untuk menyerahkan karya kepada guru, ikuti media pengumpulan yang ditentukan guru (misalnya Google Classroom atau folder Drive kelas).</div>
+<form class="hidden" id="portfolio-upload-form" method="post" target="portfolio-upload-frame"><input name="action" value="submitPortfolio"/><input id="pf-code" name="studentCode"/><input id="pf-class" name="studentClass"/><input id="pf-title" name="projectTitle"/><input id="pf-theme" name="projectTheme"/><input id="pf-note" name="projectNote"/><input id="pf-filename" name="fileName"/><input id="pf-mime" name="mimeType"/><textarea id="pf-data" name="fileData"></textarea></form>
+<iframe aria-hidden="true" class="hidden" id="portfolio-upload-frame" name="portfolio-upload-frame" title="Pengiriman portofolio"></iframe>
 </div>
 </div></section>
 <div class="text-right mt-6 pt-4">
@@ -917,10 +974,21 @@
 </div>
 </div>
 </section>
+  </div>
+</div>
 </main>
+<nav class="mobile-quick-nav" id="mobile-quick-nav" aria-label="Navigasi cepat">
+  <button data-shell-nav="overview" type="button"><span>⌂</span><small>Home</small></button>
+  <button data-shell-nav="materials" type="button"><span>▤</span><small>Materi</small></button>
+  <button data-shell-nav="guided" type="button"><span>✳</span><small>Studio</small></button>
+  <button data-shell-nav="portfolio" type="button"><span>▧</span><small>Karya</small></button>
+  <button data-shell-nav="quiz" type="button"><span>✓</span><small>Kuis</small></button>
+</nav>
 <footer class="py-8 text-center text-xs text-slate-400">© 2026 LMS-DKV · Media Pembelajaran Desain Grafis Kelas X DKV</footer>
 <!-- Hubungkan file eksternal di akhir body -->
 <script src="script.js"></script>
 <script src="studio.js"></script>
+<script src="app-navigation.js"></script>
+<script src="portfolio.js"></script>
 </body>
 </html>
