@@ -29,6 +29,23 @@
     mono:      { bg:'#17191D', paper:'#FAF8F2', accent:'#FFFFFF', second:'#A7ADB6', soft:'#414751' },
     coral:     { bg:'#F6E6D7', paper:'#2D2930', accent:'#E45F50', second:'#E6B75C', soft:'#E9CBB5' }
   };
+  // Pilih warna teks berdasarkan kontras WCAG, bukan asumsi warna palet.
+  function luminance(hex) {
+    const rgb = hex.replace('#', '').match(/.{2}/g).map(x => parseInt(x,16)/255);
+    return rgb.map(v => v <= .04045 ? v/12.92 : Math.pow((v+.055)/1.055,2.4)).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);
+  }
+  function contrast(a,b) {
+    const x=luminance(a), y=luminance(b);
+    return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);
+  }
+  function readableOn(bg, preferred) {
+    const dark='#152032', light='#FFFFFF';
+    const options=[preferred,dark,light].filter(Boolean);
+    return options.sort((a,b)=>contrast(b,bg)-contrast(a,bg))[0];
+  }
+  function drawRoundedPanel(ctx,x,y,w,h,r,color) {
+    ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();
+  }
   const $brief = $('#poster-brief');
   const $title = $('#poster-title-input');
   const $desc = $('#poster-desc-input');
@@ -128,6 +145,9 @@
     canvas.width = 1240; canvas.height = 1754;
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
+    const bodyInk=readableOn(c.bg,c.paper);
+    const accentInk=readableOn(c.accent,c.bg);
+    const kickerInk=contrast(c.second,c.bg)>=4.5?c.second:bodyInk;
     ctx.fillStyle = c.bg; ctx.fillRect(0, 0, W, H);
 
     // Bentuk utama menjadi focal point dan berubah sesuai pilihan motif.
@@ -142,19 +162,21 @@
     if (layout === 'frame') { x = W / 2; y = 785; width = 930; align = 'center'; titleSize = 98; ctx.strokeStyle = c.accent; ctx.lineWidth = 12; ctx.strokeRect(58, 58, W - 116, H - 116); ctx.strokeStyle = c.second; ctx.lineWidth = 3; ctx.strokeRect(92, 92, W - 184, H - 184); }
     if (layout === 'collage') { x = 98; y = 960; width = 1000; align = 'left'; titleSize = 100; ctx.fillStyle = c.accent; ctx.save(); ctx.translate(930, 420); ctx.rotate(-.2); ctx.fillRect(-190, -180, 380, 360); ctx.restore(); ctx.fillStyle = c.second; ctx.beginPath(); ctx.arc(955, 430, 150, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = c.soft; ctx.fillRect(75, 740, 1090, 62); }
     if (layout === 'type') { x = 92; y = 610; width = 1080; align = 'left'; titleSize = 122; ctx.fillStyle = c.accent; ctx.fillRect(88, 242, 760, 24); ctx.fillStyle = c.second; ctx.font = '900 35px Arial, sans-serif'; ctx.textAlign = 'left'; ctx.fillText('TYPE / IMAGE / MESSAGE', 92, 210); }
+    if (layout === 'magazine') { x=105;y=860;width=940;align='left';titleSize=98; ctx.fillStyle=c.accent;ctx.fillRect(0,0,465,560);ctx.fillStyle=c.second;ctx.fillRect(500,135,650,275);ctx.fillStyle=accentInk;ctx.font='900 205px Arial';ctx.textAlign='center';ctx.fillText('DKV',235,365);ctx.fillStyle=c.bg;ctx.fillRect(520,160,600,225);ctx.fillStyle=bodyInk;ctx.font='900 40px Arial';ctx.textAlign='left';ctx.fillText('IDEAS / VISUAL / CULTURE',545,290); }
+    if (layout === 'sticker') { x=108;y=900;width=960;align='left';titleSize=105;ctx.save();ctx.translate(720,390);ctx.rotate(-.15);drawRoundedPanel(ctx,-270,-160,550,350,44,c.accent);ctx.fillStyle=accentInk;ctx.textAlign='center';ctx.font='900 120px Arial';ctx.fillText('MAKE',0,5);ctx.fillText('IT!',0,130);ctx.restore();ctx.fillStyle=c.second;ctx.beginPath();ctx.arc(210,355,115,0,Math.PI*2);ctx.fill(); }
     if (layout === 'asym') { x = 120; y = 840; width = 780; align = 'left'; titleSize = 104; ctx.fillStyle = c.soft; ctx.beginPath(); ctx.moveTo(880, 150); ctx.lineTo(1220, 150); ctx.lineTo(1220, 780); ctx.closePath(); ctx.fill(); ctx.fillStyle = c.accent; ctx.beginPath(); ctx.arc(990, 470, 140, 0, Math.PI * 2); ctx.fill(); }
 
     // Header dan nomor seri.
-    ctx.fillStyle = c.accent; ctx.font = '800 25px Arial, sans-serif'; ctx.textAlign = 'left'; ctx.fillText('DKV STUDIO  /  VISUAL COMMUNICATION', 92, 100);
-    ctx.fillStyle = c.paper; ctx.globalAlpha = .78; ctx.textAlign = 'right'; ctx.font = '700 22px Arial, sans-serif'; ctx.fillText('DESIGN STUDY 01', 1148, 100); ctx.globalAlpha = 1;
+    ctx.fillStyle = contrast(c.accent,c.bg)>=4.5?c.accent:bodyInk; ctx.font = '800 25px Arial, sans-serif'; ctx.textAlign = 'left'; ctx.fillText('DKV STUDIO  /  VISUAL COMMUNICATION', 92, 100);
+    ctx.fillStyle = bodyInk; ctx.globalAlpha = 1; ctx.textAlign = 'right'; ctx.font = '700 22px Arial, sans-serif'; ctx.fillText('DESIGN STUDY 01', 1148, 100); ctx.globalAlpha = 1;
 
     // Kicker, judul, deskripsi. Ukuran judul menyesuaikan panjang kata dan lebar bidang.
-    ctx.textAlign = align; ctx.fillStyle = c.second; ctx.font = '800 28px Arial, sans-serif'; ctx.fillText(kicker, x, y - 82);
+    ctx.textAlign = align; ctx.fillStyle = kickerInk; ctx.font = '800 28px Arial, sans-serif'; ctx.fillText(kicker, x, y - 82);
     const approxLength = title.length;
     const fontSize = Math.max(64, Math.min(titleSize, approxLength > 34 ? titleSize * .72 : approxLength > 25 ? titleSize * .84 : titleSize));
-    const headlineLines = drawWrapped(ctx, title, x, y + 22, width, `900 ${fontSize}px Arial, sans-serif`, c.paper, fontSize * 1.02, align, 4);
+    const headlineLines = drawWrapped(ctx, title, x, y + 22, width, `900 ${fontSize}px Arial, sans-serif`, bodyInk, fontSize * 1.02, align, 4);
     const descTop = y + 22 + headlineLines * fontSize * 1.02 + 45;
-    drawWrapped(ctx, desc, x, descTop, Math.min(width, 850), '400 37px Arial, sans-serif', c.paper, 52, align, 4);
+    drawWrapped(ctx, desc, x, descTop, Math.min(width, 850), '400 37px Arial, sans-serif', bodyInk, 52, align, 4);
 
     // Footer call-to-action.
     const ctaY = 1510;
@@ -162,9 +184,9 @@
     if (layout === 'frame') { ctx.fillRect(180, ctaY - 32, 880, 104); }
     else if (layout === 'type') { ctx.fillRect(88, ctaY - 32, 1060, 104); }
     else { ctx.fillRect(92, ctaY - 32, 1056, 104); }
-    ctx.fillStyle = c.bg; ctx.textAlign = 'center'; ctx.font = '900 31px Arial, sans-serif';
-    drawWrapped(ctx, cta, W / 2, ctaY + 28, 980, '900 31px Arial, sans-serif', c.bg, 39, 'center', 2);
-    ctx.fillStyle = c.paper; ctx.globalAlpha = .8; ctx.font = '700 21px Arial, sans-serif'; ctx.fillText('LMS DKV  ·  STUDENT DESIGN PROJECT', W / 2, 1690); ctx.globalAlpha = 1;
+    ctx.fillStyle = accentInk; ctx.textAlign = 'center'; ctx.font = '900 31px Arial, sans-serif';
+    drawWrapped(ctx, cta, W / 2, ctaY + 28, 980, '900 31px Arial, sans-serif', accentInk, 39, 'center', 2);
+    ctx.fillStyle = bodyInk; ctx.globalAlpha = 1; ctx.font = '700 21px Arial, sans-serif'; ctx.fillText('LMS DKV  ·  STUDENT DESIGN PROJECT', W / 2, 1690); ctx.globalAlpha = 1;
     return canvas;
   }
 
@@ -172,7 +194,7 @@
     if (!$liveCanvas || !$preview) return;
     $preview.classList.remove(
       'palette-forest','palette-ocean','palette-sunset','palette-editorial','palette-citrus','palette-lavender','palette-mono','palette-coral',
-      'layout-center','layout-split','layout-diagonal','layout-swiss','layout-frame','layout-collage','layout-type','layout-asym',
+      'layout-center','layout-split','layout-diagonal','layout-swiss','layout-frame','layout-collage','layout-type','layout-asym','layout-magazine','layout-sticker',
       'motif-circles','motif-lines','motif-geometry','motif-grid','motif-waves','motif-cutout','motif-none'
     );
     $preview.classList.add(`palette-${$palette.value}`, `layout-${$layout.value}`, `motif-${$motif.value}`);
@@ -181,6 +203,9 @@
     $liveCanvas.height = source.height;
     const ctx = $liveCanvas.getContext('2d');
     if (ctx) ctx.drawImage(source, 0, 0);
+    const palette=paletteMap[$palette.value]||paletteMap.forest;
+    const status=$('#poster-contrast-status');
+    if(status) status.textContent=`Kontras judul ${contrast(readableOn(palette.bg,palette.paper),palette.bg).toFixed(1)}:1 · tombol ${contrast(readableOn(palette.accent,palette.bg),palette.accent).toFixed(1)}:1 · teks disesuaikan otomatis.`;
     if ($exportStatus) $exportStatus.textContent = 'Live canvas diperbarui. Semua pilihan desain sudah diterapkan.';
   }
 

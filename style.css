@@ -1922,3 +1922,38 @@ footer { max-width:1220px;margin:0 auto;color:#8A8292 !important;font:700 .68rem
 
 /* Identity panel reset: keep split welcome layout transparent around its two cards. */
 #section-0 > .welcome-layout { padding:0 !important;margin:0 auto !important;color:var(--text-main) !important;background:transparent !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;backdrop-filter:none !important; }
+
+/* Creative Academy v2 — mobile-first polish and readable palette indicators */
+.studio-contrast-note {padding:.55rem .7rem;border-radius:12px;background:#E7F7EF;color:#164B37 !important;font-weight:750;font-size:.72rem;line-height:1.45;border:1px solid #A8DCC2;}
+.preset-art-magazine{background:linear-gradient(90deg,#D9BEFF 0 40%,#312A4A 40% 100%);}
+.preset-art-magazine::before{content:'DKV';position:absolute;inset:17% auto auto 7%;font-size:1.5rem;font-weight:900;color:#312A4A;}
+.preset-art-magazine::after{content:'';position:absolute;right:12%;top:20%;height:58%;width:32%;background:#FF91B9;transform:rotate(-8deg);}
+.preset-art-sticker{background:#F6E6D7;}
+.preset-art-sticker::before{content:'POP!';position:absolute;inset:22% auto auto 17%;padding:.2rem .4rem;border-radius:10px;background:#E45F50;color:#fff;font-size:1.2rem;font-weight:900;transform:rotate(-12deg);}
+.preset-art-sticker::after{content:'';position:absolute;right:8%;bottom:15%;height:35%;aspect-ratio:1;background:#E6B75C;border-radius:50%;}
+#poster-live-canvas {display:block;width:100%;height:auto;aspect-ratio:1240/1754;}
+.poster-live-preview {overflow:hidden;max-width:100%;margin-inline:auto;}
+.studio-controls input,.studio-controls select,.studio-controls textarea {font-size:16px !important;}
+.studio-tab,.studio-primary-btn,.style-preset-card {touch-action:manipulation;}
+@media(max-width:900px){
+  .studio-workbench{grid-template-columns:1fr !important;}
+  .studio-preview-column{max-width:720px;width:100%;margin-inline:auto;}
+  .poster-style-presets{grid-template-columns:repeat(3,minmax(0,1fr)) !important;}
+}
+@media(max-width:600px){
+  html,body{max-width:100%;overflow-x:clip;}
+  .studio-workbench,.studio-preview-column,.studio-controls{min-width:0 !important;width:100%;}
+  .poster-style-presets{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:.55rem !important;}
+  .style-preset-card{min-height:125px !important;}
+  .studio-tabs{display:grid !important;grid-template-columns:1fr !important;gap:.5rem !important;}
+  .studio-preview-head{flex-wrap:wrap;}
+  .studio-controls,.studio-preview-column{padding:.8rem !important;}
+  .poster-live-preview{width:min(100%,390px) !important;}
+  .chapter-nav-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+  .studio-canvas-toolbar{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:space-between;}
+  .studio-canvas-toolbar span{font-size:.65rem !important;}
+  .course-visual-strip{gap:.5rem !important;}
+  .course-visual-card{min-width:0;}
+  button,select,input,textarea{max-width:100%;}
+}
+@media(max-width:370px){.poster-style-presets{grid-template-columns:1fr 1fr !important;}.studio-canvas-toolbar span{font-size:.58rem !important;}}
