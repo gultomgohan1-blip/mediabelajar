@@ -651,6 +651,117 @@
         </div>
       </div>
 
+      <!-- DESIGN STUDIO: praktik terpandu, tantangan, dan portofolio -->
+      <section id="design-studio" class="design-studio-shell p-6 sm:p-8 rounded-3xl space-y-6">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+          <div>
+            <span class="discussion-kicker text-xs font-bold uppercase tracking-widest">DESIGN STUDIO // WORKSHOP</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold mt-2">Belajar dengan Membuat Karya</h3>
+            <p class="mt-2 max-w-2xl text-sm sm:text-base">Ikuti panduan, pecahkan tantangan desain, lalu kumpulkan hasil karyamu. Setiap aktivitas terhubung dengan lima bab pembahasan.</p>
+          </div>
+          <div class="studio-status-chip"><span class="studio-live-dot"></span> CREATIVE WORKSPACE // READY</div>
+        </div>
+
+        <div class="studio-tabs" role="tablist" aria-label="Area Design Studio">
+          <button type="button" class="studio-tab is-active" data-studio-tab="studio-guided-panel" role="tab" aria-selected="true"><span>01</span> Guided Practice</button>
+          <button type="button" class="studio-tab" data-studio-tab="studio-challenge-panel" role="tab" aria-selected="false"><span>02</span> Design Challenge</button>
+          <button type="button" class="studio-tab" data-studio-tab="studio-project-panel" role="tab" aria-selected="false"><span>03</span> Project & Portfolio</button>
+        </div>
+
+        <!-- AREA 1: GUIDED PRACTICE -->
+        <div id="studio-guided-panel" class="studio-panel" role="tabpanel">
+          <div class="studio-section-heading">
+            <div><span class="studio-eyebrow">STEP-BY-STEP WORKSHOP</span><h4>Guided Practice: Rancang Poster Kampanye</h4><p>Mulai dari contoh sederhana. Ubah teks, warna, dan komposisi untuk melihat bagaimana keputusan desain memengaruhi hasil akhir.</p></div>
+            <span class="studio-chapter-tag">BAB 01–03</span>
+          </div>
+          <div class="studio-workbench">
+            <div class="studio-controls">
+              <div class="studio-step-label"><span>01</span><div><b>Tentukan pesan</b><small>Judul harus singkat dan mudah diingat.</small></div></div>
+              <label for="poster-title-input">Headline poster</label>
+              <input id="poster-title-input" type="text" maxlength="46" value="KURANGI PLASTIK SEKALI PAKAI" />
+              <label for="poster-desc-input">Pesan pendukung</label>
+              <textarea id="poster-desc-input" rows="3" maxlength="115" class="studio-textarea">Bawa tumbler dan tas pakai ulang. Langkah kecilmu membantu menjaga bumi.</textarea>
+              <label for="poster-cta-input">Ajakan tindakan</label>
+              <input id="poster-cta-input" type="text" maxlength="34" value="MULAI DARI DIRI SENDIRI" />
+
+              <div class="studio-divider"></div>
+              <div class="studio-step-label"><span>02</span><div><b>Pilih sistem visual</b><small>Gunakan warna dan komposisi yang mendukung pesan.</small></div></div>
+              <label for="poster-palette">Palet warna</label>
+              <select id="poster-palette">
+                <option value="forest">Eco / Forest</option>
+                <option value="ocean">Ocean / Fresh</option>
+                <option value="sunset">Bold / Sunset</option>
+              </select>
+              <label for="poster-layout">Komposisi</label>
+              <select id="poster-layout">
+                <option value="center">Terpusat – fokus di tengah</option>
+                <option value="split">Terbagi – teks dan visual terpisah</option>
+                <option value="diagonal">Dinamis – aksen diagonal</option>
+              </select>
+              <label for="poster-motif">Elemen grafis</label>
+              <select id="poster-motif">
+                <option value="circles">Lingkaran dan bidang</option>
+                <option value="lines">Garis dan ritme</option>
+                <option value="geometry">Bentuk geometris</option>
+              </select>
+              <div class="studio-tip"><b>Tips desainer</b><p>Batasi jumlah warna dan jenis huruf. Pastikan judul paling mudah terlihat, lalu susun informasi pendukung dengan urutan yang jelas.</p></div>
+              <button type="button" id="poster-download" class="studio-primary-btn"><span>↓</span> Ekspor Poster PNG</button>
+              <p id="poster-export-status" class="studio-feedback" aria-live="polite">Ubah pengaturan untuk melihat pratinjau. Ekspor saat desain siap.</p>
+            </div>
+            <div class="studio-preview-column">
+              <div class="studio-preview-head"><div><span class="studio-eyebrow">LIVE CANVAS</span><b>Pratinjau desain</b></div><span class="studio-format">A4 PORTRAIT</span></div>
+              <div id="poster-preview" class="poster-live-preview palette-forest layout-center" aria-label="Pratinjau poster">
+                <div class="poster-art-orbit"></div><div class="poster-art-disc"></div><div class="poster-art-lines"></div>
+                <div class="poster-live-top"><span>GREEN ACTION</span><span>01 / DKV</span></div>
+                <div class="poster-live-copy"><span class="poster-live-kicker">SMALL ACTION, BIG IMPACT</span><h5 id="poster-preview-title">KURANGI<br>PLASTIK SEKALI PAKAI</h5><p id="poster-preview-desc">Bawa tumbler dan tas pakai ulang. Langkah kecilmu membantu menjaga bumi.</p></div>
+                <div class="poster-live-stamp"><span>REUSE</span><span>REDUCE</span><span>REPEAT</span></div>
+                <div class="poster-live-bottom"><b id="poster-preview-cta">MULAI DARI DIRI SENDIRI</b><small>JAGA LINGKUNGAN SEKOLAH KITA</small></div>
+              </div>
+              <div class="studio-steps-grid">
+                <div><span>01</span><b>Pesan</b><small>Apa yang ingin disampaikan?</small></div>
+                <div><span>02</span><b>Visual</b><small>Bagaimana menarik perhatian?</small></div>
+                <div><span>03</span><b>Hierarki</b><small>Mana yang dibaca lebih dulu?</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="studio-learning-note"><b>Hubungan dengan buku:</b> praktik ini menerapkan unsur garis, bidang, tipografi, warna, dan ruang pada Bab 1 serta eksplorasi warna pada Bab 2 dan prinsip tata letak pada Bab 3.</div>
+
+          <div class="studio-mission-grid">
+            <article class="studio-mission-card">
+              <span class="studio-eyebrow">MISSION 04 // BAB 04</span>
+              <h5>Scan Lab: Dari Sketsa ke Digital</h5>
+              <p>Buat sketsa kecil di kertas, lalu pindai menggunakan scanner flatbed. Bila scanner tidak tersedia, gunakan kamera ponsel dengan pencahayaan merata sebagai alternatif latihan digitalisasi.</p>
+              <label for="scan-object">Objek yang akan dipindai</label>
+              <select id="scan-object"><option value="photo">Foto berwarna</option><option value="sketch">Sketsa / ilustrasi garis</option><option value="text">Dokumen teks</option></select>
+              <label for="scan-mode">Mode warna</label>
+              <select id="scan-mode"><option value="color">Color</option><option value="grayscale">Grayscale</option><option value="bw">Black & White</option></select>
+              <label for="scan-resolution">Resolusi</label>
+              <select id="scan-resolution"><option value="150">150 dpi</option><option value="300" selected>300 dpi</option><option value="600">600 dpi</option></select>
+              <div id="scan-advice" class="studio-result-box" aria-live="polite">Untuk foto berwarna, pilih Color dan 300 dpi sebagai titik awal untuk hasil cetak standar.</div>
+              <p class="studio-mission-foot">Setelah mencoba pengaturan, lakukan pemindaian nyata dan simpan file dengan nama yang jelas.</p>
+            </article>
+            <article class="studio-mission-card">
+              <span class="studio-eyebrow">MISSION 05 // BAB 05</span>
+              <h5>Asset Hunter: Kelola Aset Desain</h5>
+              <p>Temukan satu gambar yang sesuai dengan tema poster. Pastikan sumber dan izinnya jelas, lalu catat agar aset dapat ditelusuri kembali.</p>
+              <label for="asset-name">Nama file aset</label>
+              <input id="asset-name" type="text" maxlength="60" placeholder="contoh: ilustrasi-daur-ulang.png">
+              <label for="asset-source">Sumber / URL</label>
+              <input id="asset-source" type="text" maxlength="160" placeholder="Nama situs atau tautan sumber">
+              <label for="asset-license">Keterangan lisensi</label>
+              <select id="asset-license"><option value="CC BY">Creative Commons – CC BY</option><option value="CC0 / Public Domain">CC0 / Public Domain</option><option value="Izin pembuat">Izin langsung dari pembuat</option><option value="Perlu diperiksa">Belum dipastikan – perlu diperiksa</option></select>
+              <button type="button" id="asset-add-btn" class="studio-secondary-btn">＋ Catat aset</button>
+              <p id="asset-status" class="studio-feedback" aria-live="polite">Daftar aset masih kosong.</p>
+              <ul id="asset-list" class="asset-list"><li class="asset-empty">Belum ada aset yang dicatat.</li></ul>
+            </article>
+          </div>
+
+        <!-- AREA 2: CHALLENGE - mini lab lama dipertahankan agar alur kuis tetap bekerja -->
+        <div id="studio-challenge-panel" class="studio-panel hidden" role="tabpanel">
+          <div class="studio-section-heading">
+            <div><span class="studio-eyebrow">MISSION // APPLY THE PRINCIPLES</span><h4>Design Challenge: Susun Struktur Poster</h4><p>Tempatkan judul, visual utama, dan ajakan pada posisi yang tepat. Setelah itu, selesaikan tantangan kontras dan hierarki visual.</p></div>
+            <span class="studio-chapter-tag">BAB 01 & 03</span>
+          </div>
       <!-- PRAKTIK MINI -->
       <section id="mini-lab" class="p-8 rounded-3xl bg-white/70 dark:bg-black/75 border border-white/60 dark:border-white/10">
         <span class="discussion-kicker text-xs font-bold uppercase tracking-widest">DESIGN STUDIO // PRAKTIK</span>
@@ -675,6 +786,43 @@
         <p id="layout-feedback" class="mt-3 text-sm font-semibold" aria-live="polite"></p>
         <div id="level-2" class="hidden mt-6"><p class="text-slate-600 dark:text-slate-300 mb-3">Level 2: terapkan prinsip kontras dengan memilih pasangan teks dan latar yang mudah dibaca.</p><button type="button" class="contrast-choice px-4 py-2" data-correct="false">Teks kuning muda di atas latar putih</button><button type="button" class="contrast-choice px-4 py-2" data-correct="true">Teks biru tua di atas latar kuning muda</button></div>
         <div id="level-3" class="hidden mt-6"><p class="text-slate-600 dark:text-slate-300 mb-3">Level 3: terapkan hierarki visual dengan memilih bagian yang perlu paling menonjol pada poster ajakan.</p><button type="button" class="ux-choice px-4 py-2" data-correct="false">Hiasan kecil lebih dominan daripada pesan</button><button type="button" class="ux-choice px-4 py-2" data-correct="true">Judul dan pesan utama paling mudah terlihat</button></div>
+      </section>
+        </div>
+
+        <!-- AREA 3: PROJECT & PORTFOLIO -->
+        <div id="studio-project-panel" class="studio-panel hidden" role="tabpanel">
+          <div class="studio-section-heading">
+            <div><span class="studio-eyebrow">FINAL PROJECT // BUILD YOUR PORTFOLIO</span><h4>Project & Portfolio: Kampanye Peduli Lingkungan</h4><p>Gunakan hasil latihan sebagai bekal. Buat karya final di aplikasi desain pilihanmu, kemudian periksa menggunakan kriteria berikut.</p></div>
+            <span class="studio-chapter-tag">PROYEK AKHIR</span>
+          </div>
+          <div class="project-brief-grid">
+            <div class="project-brief-card">
+              <span class="studio-eyebrow">CREATIVE BRIEF</span>
+              <h5>Poster A4: Kurangi Plastik Sekali Pakai</h5>
+              <p>Target audiens: warga sekolah. Tujuan: mengajak siswa membawa botol minum dan tas pakai ulang serta mengurangi plastik sekali pakai.</p>
+              <ul><li>Ukuran A4, orientasi potret.</li><li>Headline singkat dan mudah dibaca.</li><li>Gunakan ilustrasi/foto yang relevan dan boleh digunakan.</li><li>Terapkan kontras, keseimbangan, kesatuan, dan hierarki.</li><li>Ekspor hasil akhir menjadi PNG atau PDF.</li></ul>
+            </div>
+            <div class="project-rubric-card">
+              <span class="studio-eyebrow">QUALITY CHECK</span>
+              <h5>Periksa sebelum dikumpulkan</h5>
+              <label class="project-check"><input type="checkbox" class="project-check-input"><span>Pesan sesuai dengan brief dan target audiens.</span></label>
+              <label class="project-check"><input type="checkbox" class="project-check-input"><span>Judul, visual, dan informasi memiliki hierarki yang jelas.</span></label>
+              <label class="project-check"><input type="checkbox" class="project-check-input"><span>Warna memiliki kontras dan konsisten.</span></label>
+              <label class="project-check"><input type="checkbox" class="project-check-input"><span>Tata letak seimbang dan tidak terlalu padat.</span></label>
+              <label class="project-check"><input type="checkbox" class="project-check-input"><span>Ejaan, sumber aset, dan format file sudah diperiksa.</span></label>
+              <div class="project-progress-track"><span id="project-progress-fill"></span></div>
+              <p id="project-progress-text" class="studio-feedback">0 dari 5 pemeriksaan selesai.</p>
+            </div>
+          </div>
+          <div class="project-upload-card">
+            <div><span class="studio-eyebrow">MY PORTFOLIO</span><h5>Pratinjau karya akhir</h5><p>Pilih gambar hasil desain dari perangkatmu untuk melihat pratinjau. File hanya ditampilkan di browser ini dan tidak dikirim ke server LMS.</p></div>
+            <label for="portfolio-file" class="studio-upload-btn">＋ Pilih karya (PNG / JPG / WEBP / PDF)</label>
+            <input id="portfolio-file" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" class="sr-only">
+            <div id="portfolio-preview-wrap" class="portfolio-preview-wrap hidden"><img id="portfolio-image-preview" alt="Pratinjau karya siswa" class="hidden"><div id="portfolio-pdf-preview" class="hidden"><span>PDF</span><b id="portfolio-pdf-name"></b><a id="portfolio-pdf-open" target="_blank" rel="noopener">Buka file PDF ↗</a></div></div>
+            <p id="portfolio-file-status" class="studio-feedback" aria-live="polite">Belum ada file yang dipilih.</p>
+          </div>
+          <div class="studio-learning-note"><b>Catatan pengumpulan:</b> pratinjau ini bersifat lokal. Untuk menyerahkan karya kepada guru, ikuti media pengumpulan yang ditentukan guru (misalnya Google Classroom atau folder Drive kelas).</div>
+        </div>
       </section>
       <div class="text-right mt-6 pt-4">
         <button id="btn-to-kuis" type="button" disabled class="px-8 py-3.5 rounded-2xl font-bold text-white bg-gradient-to-r from-indigo-300 to-violet-400 transition-all duration-300 disabled:opacity-40">Lanjut ke Kuis</button>
@@ -755,5 +903,6 @@
   <!-- Hubungkan file eksternal di akhir body -->
   <link rel="stylesheet" href="style.css">
   <script src="script.js"></script>
+  <script src="studio.js"></script>
 </body>
 </html>
