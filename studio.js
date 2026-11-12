@@ -20,9 +20,14 @@
 
   // Poster builder: pratinjau langsung dan ekspor PNG tanpa mengirim data ke server.
   const paletteMap = {
-    forest: { bg: '#09251B', paper: '#F4FFE9', accent: '#B9F34A', second: '#1FD1B5', soft: '#173F32' },
-    ocean: { bg: '#082437', paper: '#F2FBFF', accent: '#22D8D0', second: '#FFC857', soft: '#16445A' },
-    sunset: { bg: '#2A1631', paper: '#FFF5F1', accent: '#FF6B8A', second: '#FFC857', soft: '#51284B' }
+    forest:   { bg: '#102C24', paper: '#F7F5E9', accent: '#D9F36A', second: '#F3A65A', soft: '#285A47' },
+    ocean:    { bg: '#102B3B', paper: '#F2F6F7', accent: '#57D8D0', second: '#F5C95B', soft: '#20566B' },
+    sunset:   { bg: '#3A1C2D', paper: '#FFF3E8', accent: '#FF7D70', second: '#FFD166', soft: '#71354A' },
+    editorial:{ bg: '#F0E9D9', paper: '#20232D', accent: '#3156E8', second: '#E96A4B', soft: '#D6CBB6' },
+    citrus:   { bg: '#17233D', paper: '#FFF8E8', accent: '#C9F05A', second: '#4F72F2', soft: '#344A75' },
+    lavender: { bg: '#29223D', paper: '#FFF8FF', accent: '#D4B8FF', second: '#FF8BB8', soft: '#594A78' },
+    mono:     { bg: '#171717', paper: '#F7F4ED', accent: '#FFFFFF', second: '#A5A5A5', soft: '#414141' },
+    coral:    { bg: '#F8E6D5', paper: '#2C2631', accent: '#E65D4F', second: '#E6B85C', soft: '#E9CBB5' }
   };
   const titleInput = $('#poster-title-input');
   const descInput = $('#poster-desc-input');
@@ -35,16 +40,58 @@
   const previewDesc = $('#poster-preview-desc');
   const previewCta = $('#poster-preview-cta');
   const exportStatus = $('#poster-export-status');
+  const briefInput = $('#poster-brief');
+
+  const briefPresets = {
+    environment: { title: 'JAGA BUMI, MULAI HARI INI', desc: 'Kurangi plastik sekali pakai. Bawa botol minum dan tas guna ulang untuk kebiasaan yang lebih bertanggung jawab.', cta: 'PILIH GUNA ULANG', palette: 'forest', layout: 'swiss', motif: 'waves' },
+    literacy: { title: 'CEK DULU SEBELUM KLIK', desc: 'Kenali sumber, periksa informasi, dan bagikan konten dengan bijak. Jejak digital dimulai dari keputusan kecil.', cta: 'JADI PENGGUNA CERDAS', palette: 'lavender', layout: 'type', motif: 'grid' },
+    health: { title: 'GERAK 30 MENIT, SEHAT SETIAP HARI', desc: 'Luangkan waktu untuk bergerak, minum air yang cukup, dan istirahat dengan teratur.', cta: 'MULAI DARI SEKARANG', palette: 'ocean', layout: 'split', motif: 'circles' },
+    'anti-bullying': { title: 'KATA-KATA BISA MENGUATKAN', desc: 'Hargai perbedaan, dengarkan teman, dan berani mencari bantuan ketika melihat perundungan.', cta: 'BANGUN SEKOLAH RAMAH', palette: 'coral', layout: 'collage', motif: 'cutout' },
+    energy: { title: 'MATIKAN SAAT TAK DIGUNAKAN', desc: 'Gunakan listrik seperlunya. Matikan lampu dan perangkat saat tidak diperlukan.', cta: 'HEMAT ENERGI HARI INI', palette: 'citrus', layout: 'diagonal', motif: 'lines' },
+    culture: { title: 'CERITAKAN BUDAYA KITA', desc: 'Kenali tradisi, bahasa, motif, dan cerita dari lingkungan sekitar. Warisan budaya hidup melalui generasi.', cta: 'BANGGA BUDAYA LOKAL', palette: 'editorial', layout: 'frame', motif: 'geometry' },
+    water: { title: 'SETETES AIR, BERARTI', desc: 'Tutup keran setelah digunakan dan gunakan air secukupnya. Setiap tindakan membantu menjaga sumber daya.', cta: 'GUNAKAN AIR DENGAN BIJAK', palette: 'ocean', layout: 'center', motif: 'waves' }
+  };
 
   function updatePosterPreview() {
     if (!preview) return;
-    preview.classList.remove('palette-forest', 'palette-ocean', 'palette-sunset', 'layout-center', 'layout-split', 'layout-diagonal', 'motif-circles', 'motif-lines', 'motif-geometry');
+    const variants = [
+      'palette-forest','palette-ocean','palette-sunset','palette-editorial','palette-citrus','palette-lavender','palette-mono','palette-coral',
+      'layout-center','layout-split','layout-diagonal','layout-swiss','layout-frame','layout-collage','layout-type',
+      'motif-circles','motif-lines','motif-geometry','motif-grid','motif-waves','motif-cutout'
+    ];
+    preview.classList.remove(...variants);
     preview.classList.add(`palette-${paletteInput.value}`, `layout-${layoutInput.value}`, `motif-${motifInput.value}`);
     previewTitle.textContent = titleInput.value.trim() || 'JUDUL POSTER';
     previewDesc.textContent = descInput.value.trim() || 'Tuliskan pesan pendukung yang singkat dan mudah dipahami.';
     previewCta.textContent = ctaInput.value.trim() || 'TULISKAN AJAKAN';
     exportStatus.textContent = 'Pratinjau diperbarui. Periksa komposisi sebelum mengekspor.';
   }
+
+  if (briefInput) briefInput.addEventListener('change', () => {
+    const preset = briefPresets[briefInput.value];
+    if (!preset) return;
+    titleInput.value = preset.title;
+    descInput.value = preset.desc;
+    ctaInput.value = preset.cta;
+    paletteInput.value = preset.palette;
+    layoutInput.value = preset.layout;
+    motifInput.value = preset.motif;
+    updatePosterPreview();
+    exportStatus.textContent = 'Tema contoh diterapkan. Kamu tetap bisa mengubah semua teks dan gaya desain.';
+  });
+
+  // Kartu gaya visual memberi titik awal berbeda tanpa mengunci pilihan siswa.
+  $$('[data-style-preset]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (briefInput) briefInput.value = 'custom';
+      paletteInput.value = button.dataset.palette;
+      layoutInput.value = button.dataset.layout;
+      motifInput.value = button.dataset.motif;
+      $$('.style-preset-card').forEach((card) => card.classList.toggle('is-selected', card === button));
+      updatePosterPreview();
+      exportStatus.textContent = `Gaya ${button.querySelector('b')?.textContent || 'pilihan'} diterapkan. Silakan lanjutkan personalisasi desain.`;
+    });
+  });
   [titleInput, descInput, ctaInput, paletteInput, layoutInput, motifInput].forEach((control) => {
     if (control) control.addEventListener('input', updatePosterPreview);
     if (control) control.addEventListener('change', updatePosterPreview);
@@ -89,92 +136,91 @@
     canvas.width = 1240;
     canvas.height = 1754;
     const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
 
     ctx.fillStyle = colors.bg;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, W, H);
 
-    // Bentuk dekoratif berfungsi sebagai latihan bidang, garis, dan ruang.
+    // Motif visual dipilih sebagai latihan bidang, garis, ritme, dan ruang.
     if (motif === 'circles') {
-      ctx.fillStyle = colors.soft;
-      ctx.beginPath(); ctx.arc(1010, 380, 290, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.second;
-      ctx.beginPath(); ctx.arc(1010, 380, 190, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.accent;
-      ctx.beginPath(); ctx.arc(1010, 380, 100, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = colors.soft; ctx.beginPath(); ctx.arc(1010, 390, 300, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = colors.second; ctx.beginPath(); ctx.arc(1010, 390, 205, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = colors.accent; ctx.beginPath(); ctx.arc(1010, 390, 105, 0, Math.PI * 2); ctx.fill();
     } else if (motif === 'lines') {
-      ctx.strokeStyle = colors.second;
-      ctx.lineWidth = 16;
-      for (let i = 0; i < 8; i++) {
-        ctx.beginPath(); ctx.moveTo(760 + i * 45, 120); ctx.lineTo(1120 + i * 45, 600); ctx.stroke();
-      }
-      ctx.fillStyle = colors.accent;
-      ctx.fillRect(780, 650, 330, 24);
+      ctx.save(); ctx.strokeStyle = colors.second; ctx.lineWidth = 16;
+      for (let i = 0; i < 9; i++) { ctx.beginPath(); ctx.moveTo(740 + i * 48, 110); ctx.lineTo(1100 + i * 48, 600); ctx.stroke(); }
+      ctx.restore(); ctx.fillStyle = colors.accent; ctx.fillRect(760, 650, 360, 24);
+    } else if (motif === 'geometry') {
+      ctx.fillStyle = colors.soft; ctx.beginPath(); ctx.moveTo(1240, 70); ctx.lineTo(1240, 880); ctx.lineTo(580, 880); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = colors.second; ctx.beginPath(); ctx.moveTo(930, 90); ctx.lineTo(1240, 90); ctx.lineTo(1240, 520); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = colors.accent; ctx.beginPath(); ctx.moveTo(785, 705); ctx.lineTo(1100, 705); ctx.lineTo(940, 970); ctx.closePath(); ctx.fill();
+    } else if (motif === 'grid') {
+      ctx.save(); ctx.strokeStyle = colors.soft; ctx.globalAlpha = .75; ctx.lineWidth = 3;
+      for (let x = 690; x <= 1190; x += 62) { ctx.beginPath(); ctx.moveTo(x, 130); ctx.lineTo(x, 1320); ctx.stroke(); }
+      for (let y = 150; y <= 1320; y += 62) { ctx.beginPath(); ctx.moveTo(660, y); ctx.lineTo(1190, y); ctx.stroke(); }
+      ctx.restore(); ctx.fillStyle = colors.accent; ctx.fillRect(760, 230, 280, 280);
+    } else if (motif === 'waves') {
+      ctx.save(); ctx.lineWidth = 28; ctx.strokeStyle = colors.soft;
+      for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.moveTo(600, 300 + k * 90); ctx.bezierCurveTo(760, 140 + k * 90, 920, 480 + k * 90, 1260, 250 + k * 90); ctx.stroke(); }
+      ctx.strokeStyle = colors.accent; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(650, 660); ctx.bezierCurveTo(820, 500, 980, 850, 1260, 620); ctx.stroke(); ctx.restore();
     } else {
-      ctx.fillStyle = colors.soft;
-      ctx.beginPath(); ctx.moveTo(1240, 100); ctx.lineTo(1240, 850); ctx.lineTo(620, 850); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = colors.second;
-      ctx.beginPath(); ctx.moveTo(980, 100); ctx.lineTo(1240, 100); ctx.lineTo(1240, 480); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = colors.accent;
-      ctx.beginPath(); ctx.moveTo(820, 700); ctx.lineTo(1100, 700); ctx.lineTo(960, 920); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = colors.soft; ctx.fillRect(760, 160, 480, 480);
+      ctx.fillStyle = colors.second; ctx.fillRect(880, 275, 360, 365);
+      ctx.fillStyle = colors.accent; ctx.beginPath(); ctx.arc(900, 330, 180, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = colors.bg; ctx.fillRect(760, 560, 250, 220);
     }
 
-    // Penanda editorial di bagian atas.
-    ctx.fillStyle = colors.accent;
-    ctx.font = '700 28px Arial, sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('GREEN ACTION  /  DKV STUDIO', 92, 110);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = colors.paper;
-    ctx.fillText('01 — CAMPAIGN', 1148, 110);
-
-    const split = layout === 'split';
-    const diagonal = layout === 'diagonal';
-    const textX = layout === 'center' ? 620 : 105;
-    const align = layout === 'center' ? 'center' : 'left';
-    const maxTextWidth = layout === 'center' ? 1010 : 780;
-    const titleY = layout === 'center' ? 800 : 760;
-
-    if (diagonal) {
-      ctx.save();
-      ctx.translate(0, 100);
-      ctx.rotate(-0.06);
-      ctx.fillStyle = colors.accent;
-      ctx.fillRect(70, 600, 1090, 18);
-      ctx.restore();
+    // Kerangka tiap pilihan layout dibuat berbeda agar siswa melihat variasi komposisi.
+    let textX = 105, align = 'left', maxTextWidth = 930, titleY = 730;
+    if (layout === 'center') { textX = 620; align = 'center'; maxTextWidth = 1010; titleY = 760; }
+    if (layout === 'split') { textX = 100; align = 'left'; maxTextWidth = 690; titleY = 690; }
+    if (layout === 'diagonal') { textX = 105; align = 'left'; maxTextWidth = 850; titleY = 745; ctx.save(); ctx.translate(0, 90); ctx.rotate(-.075); ctx.fillStyle = colors.accent; ctx.fillRect(55, 590, 1130, 24); ctx.restore(); }
+    if (layout === 'swiss') {
+      textX = 115; align = 'left'; maxTextWidth = 810; titleY = 610;
+      ctx.fillStyle = colors.accent; ctx.fillRect(90, 190, 18, 400);
+      ctx.fillStyle = colors.second; ctx.font = '900 200px Arial, sans-serif'; ctx.textAlign = 'right'; ctx.fillText('01', 1120, 450);
+      ctx.strokeStyle = colors.paper; ctx.globalAlpha = .35; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(90, 510); ctx.lineTo(1145, 510); ctx.stroke(); ctx.globalAlpha = 1;
     }
-    if (split) {
-      roundedRect(ctx, 760, 1020, 360, 290, 36, colors.soft);
-      ctx.fillStyle = colors.second;
-      ctx.beginPath(); ctx.arc(940, 1165, 105, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.accent;
-      ctx.beginPath(); ctx.arc(940, 1165, 48, 0, Math.PI * 2); ctx.fill();
+    if (layout === 'frame') {
+      textX = 620; align = 'center'; maxTextWidth = 900; titleY = 735;
+      ctx.strokeStyle = colors.accent; ctx.lineWidth = 12; ctx.strokeRect(72, 72, W - 144, H - 144);
+      ctx.strokeStyle = colors.second; ctx.lineWidth = 3; ctx.strokeRect(104, 104, W - 208, H - 208);
+    }
+    if (layout === 'collage') {
+      textX = 100; align = 'left'; maxTextWidth = 825; titleY = 880;
+      ctx.fillStyle = colors.accent; ctx.save(); ctx.translate(920, 430); ctx.rotate(-.22); ctx.fillRect(-190, -190, 380, 380); ctx.restore();
+      ctx.fillStyle = colors.second; ctx.beginPath(); ctx.arc(970, 420, 145, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = colors.soft; ctx.fillRect(80, 690, 1080, 70);
+    }
+    if (layout === 'type') {
+      textX = 95; align = 'left'; maxTextWidth = 1050; titleY = 650;
+      ctx.fillStyle = colors.accent; ctx.fillRect(90, 260, 760, 22);
+      ctx.fillStyle = colors.second; ctx.font = '900 38px Arial, sans-serif'; ctx.textAlign = 'left'; ctx.fillText('TYPE / IMAGE / MESSAGE', 95, 220);
     }
 
+    // Header label.
+    ctx.fillStyle = colors.accent; ctx.font = '700 28px Arial, sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('DKV STUDIO  /  VISUAL CAMPAIGN', 92, 110);
+    ctx.textAlign = 'right'; ctx.fillStyle = colors.paper; ctx.fillText('DESIGN STUDY 01', 1148, 110);
+
+    // Headline and supporting copy.
     ctx.textAlign = align;
-    ctx.fillStyle = colors.second;
-    ctx.font = '700 30px Arial, sans-serif';
-    ctx.fillText('SMALL ACTION, BIG IMPACT', textX, titleY - 78);
+    ctx.fillStyle = colors.second; ctx.font = '700 30px Arial, sans-serif';
+    ctx.fillText('SMALL IDEA, MEANINGFUL IMPACT', textX, titleY - 78);
     ctx.fillStyle = colors.paper;
-    ctx.font = '900 100px Arial, sans-serif';
-    const titleLines = wrapCanvasText(ctx, title.toUpperCase(), textX, titleY + 40, maxTextWidth, 116, 4);
-
-    ctx.fillStyle = colors.paper;
-    ctx.globalAlpha = 0.9;
-    ctx.font = '400 38px Arial, sans-serif';
-    const descY = titleY + 40 + titleLines * 116 + 50;
-    wrapCanvasText(ctx, desc, textX, descY, maxTextWidth - (split ? 350 : 0), 54, 4);
+    const titleFont = layout === 'type' ? 112 : layout === 'swiss' ? 92 : 100;
+    ctx.font = `900 ${titleFont}px Arial, sans-serif`;
+    const titleLines = wrapCanvasText(ctx, title.toUpperCase(), textX, titleY + 40, maxTextWidth, titleFont * 1.12, 4);
+    ctx.fillStyle = colors.paper; ctx.globalAlpha = .9; ctx.font = '400 38px Arial, sans-serif';
+    const descY = titleY + 40 + titleLines * titleFont * 1.12 + 48;
+    wrapCanvasText(ctx, desc, textX, descY, maxTextWidth, 54, 4);
     ctx.globalAlpha = 1;
 
-    // Pita ajakan menjadi penutup visual yang kuat.
-    roundedRect(ctx, 92, 1500, 1056, 116, 24, colors.accent);
-    ctx.fillStyle = colors.bg;
-    ctx.textAlign = 'center';
-    ctx.font = '800 34px Arial, sans-serif';
+    // Ajakan tindakan menjadi penutup poster.
+    roundedRect(ctx, 92, 1500, 1056, 116, 22, colors.accent);
+    ctx.fillStyle = colors.bg; ctx.textAlign = 'center'; ctx.font = '800 34px Arial, sans-serif';
     wrapCanvasText(ctx, cta.toUpperCase(), 620, 1570, 970, 42, 2);
-    ctx.fillStyle = colors.paper;
-    ctx.font = '600 22px Arial, sans-serif';
-    ctx.fillText('JAGA LINGKUNGAN SEKOLAH KITA', 620, 1680);
-
+    ctx.fillStyle = colors.paper; ctx.font = '600 22px Arial, sans-serif'; ctx.fillText('LMS DKV  ·  STUDENT DESIGN PROJECT', 620, 1680);
     return canvas;
   }
 

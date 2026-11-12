@@ -1,39 +1,58 @@
-LMS DKV — PEMBAHASAN DESAIN GRAFIS
+LMS DKV — EDITORIAL DESIGN STUDIO
+Versi visual yang diperbarui untuk pembelajaran Desain Grafis.
 
 ISI PAKET
-- index.html : halaman pembelajaran, pembahasan, latihan, dan antarmuka evaluasi.
-- style.css  : gaya visual neon/dark LMS.
-- script.js  : navigasi utama, mini-lab tata letak, kuis, angket SUS, serta pengiriman data.
-- studio.js  : Design Studio, editor poster PNG, simulator scanner, daftar aset, dan pratinjau portofolio.
+- index.html : halaman identitas, pembahasan lima bab, Design Studio, kuis, dan angket SUS.
+- style.css  : tema Editorial Design School (paper/ink, cobalt, coral, dan lime), responsif untuk desktop dan ponsel.
+- script.js  : navigasi utama, latihan inti, kuis, angket SUS, perhitungan skor, dan pengiriman Google Apps Script.
+- studio.js  : editor poster PNG, pilihan brief, style presets, simulator scanner, daftar aset, tantangan layout, dan pratinjau portofolio.
+- README.txt : petunjuk paket.
 
-SUSUNAN PEMBAHASAN
-1. Unsur-unsur tata letak: garis, bidang, ilustrasi, bitmap/vektor, tipografi, warna, gelap-terang, tekstur, dan ruang.
-2. Warna: persepsi warna, roda warna, RGB, CMYK, HSL, Lab, gamut, spot/process color, fungsi warna.
-3. Prinsip tata letak: proporsi, golden ratio, keseimbangan, irama, kontras, kesatuan, harmoni, grid, margin, kolom, dan bleed.
-4. Scanner: jenis, komponen, cara kerja, pengaturan, resolusi, proses pemindaian, dan format hasil.
-5. Data digital melalui internet: browser, istilah internet, download, upload, pengelolaan file, keamanan, dan domain.
+ARAH VISUAL BARU
+- Latar bergaya kertas dengan tipografi editorial dan aksen warna yang lebih berani.
+- Galeri visual di halaman materi serta gambar referensi pada masing-masing bab.
+- Kartu navigasi bab, panel materi yang lebih rapi, dan layout gambar-caption.
+- Tema gelap tetap tersedia melalui tombol tema.
 
-SUMBER MATERI
-Pembahasan disusun ulang dengan bahasa penjelasan sendiri berdasarkan buku "Desain Grafis SMK Kelas XI" (Direktorat Pembinaan SMK, Kementerian Pendidikan dan Kebudayaan, 2013), terutama Bab 1 sampai Bab 5. Buku tersebut merupakan bahan ajar Kelas XI Kurikulum 2013; untuk pembelajaran kelas/kurikulum saat ini, guru perlu menyesuaikan kedalaman dan urutan materi dengan CP serta ATP yang berlaku.
-Ilustrasi diagram pada LMS dibuat ulang dalam HTML/CSS/SVG dan bukan salinan gambar halaman buku.
+GAMBAR REFERENSI INTERNET DAN KREDIT
+Gambar pada halaman materi dimuat dari situs sumber dan memiliki tautan kredit pada caption:
+1. Beyond Print — Design & Branding: https://www.beyondprint.com.au/services/design-and-branding-services
+2. Hristo Butchvarov — The Power of Color (Dribbble): https://dribbble.com/shots/15705035-The-Power-of-Color-Infographic-Poster
+3. Louise Brownlow — Moodboard Example (Behance): https://www.behance.net/gallery/69613079/Moodboard-Example-InDesign
+4. Xtrme — Professional Art Reproduction: https://print.xtrme.com/preserving-the-original-how-professional-art-reproduction-brings-artwork-to-life
+5. Vantura Digital — Brand Identity Workspace: https://vanturadigital.com/
+Catatan: gambar referensi dimiliki oleh penerbit/pembuat aslinya. Gambar dipakai untuk analisis pembelajaran; jangan mengklaimnya sebagai karya siswa. Website memerlukan koneksi internet untuk memuat gambar eksternal. Jika penyedia mengubah URL atau membatasi hotlink, ganti src gambar dengan file milik sendiri yang memiliki izin penggunaan.
 
-DESIGN STUDIO
-- Guided Practice: editor poster langsung dengan headline, teks pendukung, palet warna, dan pilihan komposisi; hasil dapat diekspor sebagai PNG.
-- Design Challenge: susun elemen poster dengan drag-and-drop atau ketukan pada layar sentuh, lalu selesaikan tantangan kontras dan hierarki.
-- Scan Lab: simulator rekomendasi mode warna dan resolusi untuk foto, sketsa, dan dokumen.
-- Asset Hunter: catat nama aset, sumber, dan lisensi untuk latihan pengelolaan bahan desain.
-- Project & Portfolio: brief poster kampanye, checklist kualitas, serta pratinjau file gambar/PDF secara lokal. File portofolio tidak dikirim ke server LMS.
+PEMBAHASAN MATERI
+1. Unsur tata letak: garis, bidang, ilustrasi, bitmap/vektor, tipografi, warna, gelap-terang, tekstur, ruang.
+2. Fungsi, komponen, dan model warna: persepsi warna, roda warna, RGB, CMYK, HSL, Lab, gamut, spot/process color.
+3. Prinsip tata letak: proporsi, golden ratio, keseimbangan, irama, kontras, kesatuan, harmoni, grid, margin, kolom, bleed.
+4. Scanner: jenis, komponen, cara kerja, pengaturan, resolusi, proses pemindaian, format hasil.
+5. Data digital melalui internet: browser, download, upload, pengelolaan file, keamanan, dan domain.
+Sumber materi utama: buku Desain Grafis SMK Kelas XI, Direktorat Pembinaan SMK, 2013 (Bab 1–5). Buku tersebut terbit untuk Kelas XI/Kurikulum 2013; guru perlu menyesuaikan kedalaman dan urutan dengan CP/ATP yang berlaku.
+
+DESIGN STUDIO — PILIHAN YANG DIPERBANYAK
+- 8 palet warna: Forest, Ocean, Sunset, Editorial, Citrus, Lavender, Monochrome, Coral.
+- 7 komposisi: Center, Split, Diagonal, Swiss, Frame, Collage, Type-led.
+- 6 motif: Circles, Lines, Geometry, Grid, Waves, Cut-out.
+- 8 tema brief: lingkungan, literasi digital, kesehatan, anti-perundungan, hemat energi, budaya lokal, hemat air, dan brief bebas.
+- 4 kartu style preset: Editorial Grid, Bold Typography, Color Blocks, Organic Flow.
+- Hasil editor poster bisa diekspor menjadi PNG dari browser.
+- Scan Lab dan Asset Hunter merupakan simulator/latihan. Inventaris aset hanya disimpan pada tampilan sesi browser.
+- Pratinjau portofolio berjalan lokal. File karya tidak dikirim ke server LMS.
+
+FITUR YANG DIPERTAHANKAN
+- script.js dipertahankan identik.
+- Kuis tetap 15 soal, 45 detik per soal.
+- Format payload pengiriman: kodeSiswa, skorKuis, skorSus.
+- Perhitungan SUS dan 10 pernyataannya tidak diubah.
+- URL Google Apps Script tidak diubah.
+Penting: pengiriman aktual ke Google Apps Script tetap harus diuji dari domain GitHub Pages setelah deploy. Jangan unggah data pribadi siswa atau kredensial ke repository publik.
 
 UPLOAD KE GITHUB PAGES
 1. Ekstrak ZIP.
-2. Unggah index.html, style.css, script.js, studio.js, dan README.txt langsung ke root repository.
-3. Pastikan index.html berada di root, bukan di dalam subfolder.
-4. Pilih Settings > Pages > Deploy from a branch > main > /(root) > Save.
-
-CATATAN INTEGRASI
-- URL Google Apps Script, nama field payload (kodeSiswa, skorKuis, skorSus), perhitungan SUS, dan mekanisme pengiriman dipertahankan.
-- File script.js tetap identik dengan versi sebelumnya; interaksi tambahan ditempatkan pada studio.js.
-- Kuis tetap berisi 15 soal dengan waktu 45 detik per soal.
-- Editor poster menghasilkan PNG di browser. Pratinjau portofolio dan daftar aset bersifat lokal/sesi browser; keduanya tidak dikirim ke backend.
-- Setelah hosting diperbarui, uji alur identitas, Design Studio, tantangan layout, kuis, dan angket di browser. Pengiriman aktual ke Apps Script perlu diuji dari domain hosting.
-- Jangan mengunggah data pribadi siswa, kredensial, atau informasi rahasia ke repository publik.
+2. Unggah lima file di atas langsung ke root repository (folder utama).
+3. Ganti index.html dan style.css versi lama; tambahkan studio.js; pertahankan script.js yang sama.
+4. Pastikan Settings > Pages menggunakan branch main dan folder /(root).
+5. Setelah deploy, buka website dan tekan Ctrl + F5.
+6. Uji identitas, lima tab materi, editor poster, ekspor PNG, tantangan layout, kuis, angket SUS, dan pengiriman data.
